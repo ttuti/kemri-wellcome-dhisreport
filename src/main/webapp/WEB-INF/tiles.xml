@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE tiles-definitions PUBLIC
+       "-//Apache Software Foundation//DTD Tiles Configuration 2.0//EN"
+       "http://tiles.apache.org/dtds/tiles-config_2_0.dtd">
+
+<tiles-definitions>
+
+	<!-- Definitions for the common parts of the application -->
+	<definition name="wellcome.meta" template="/WEB-INF/pages/layout/pieces/meta.jsp" />
+	<definition name="wellcome.header" template="/WEB-INF/pages/layout/pieces/header.jsp" />
+	<definition name="wellcome.menu" template="/WEB-INF/pages/layout/pieces/menu.jsp" />
+	<definition name="wellcome.content" template="/WEB-INF/pages/layout/pieces/content.jsp" />
+	<definition name="wellcome.footer" template="/WEB-INF/pages/layout/pieces/footer.jsp" />
+	<definition name="wellcome.common.scripts" template="/WEB-INF/pages/layout/pieces/common_scripts.jsp" />
+	<definition name="wellcome.basic.header" template="/WEB-INF/pages/layout/pieces/basic/header.jsp" />
+
+	<definition name="homeLayout" template="/WEB-INF/pages/layout/layout.jsp">
+		<put-attribute name="title" value="Template" />
+		<put-attribute name="meta" value="wellcome.meta" />
+		<put-attribute name="header" value="wellcome.header" />
+		<put-attribute name="common-scripts" value="wellcome.common.scripts" />
+		<put-attribute name="menu" value="wellcome.menu" />
+		<put-attribute name="content" value="wellcome.content" />
+		<put-attribute name="footer" value="wellcome.footer" />
+	</definition>
+	
+	<definition name="baseLayout" template="/WEB-INF/pages/layout/basiclayout.jsp">
+		<put-attribute name="title" value="Template" />
+		<put-attribute name="meta" value="wellcome.meta" />
+		<put-attribute name="header" value="wellcome.header" />
+		<put-attribute name="common-scripts" value="wellcome.common.scripts" />
+		<put-attribute name="menu" value="wellcome.menu" />
+		<put-attribute name="content" value="wellcome.content" />
+		<put-attribute name="footer" value="wellcome.footer" />
+	</definition>
+
+	<!-- Home page -->
+	<definition name="index" extends="baseLayout">
+		<put-attribute name="title" value="KEMRI/Wellcome Trust Programme REDCap-DHISv2 Integration" />
+		<put-attribute name="content" value="/WEB-INF/pages/configuration/login.jsp" />
+	</definition>
+	
+	<!-- Home page -->
+	<definition name="home" extends="homeLayout">
+		<put-attribute name="title" value="KEMRI/Wellcome Trust Programme REDCap-DHISv2 Integration" />
+		<put-attribute name="content" value="/WEB-INF/pages/configuration/home.jsp" />		
+	</definition>
+
+	<definition name="forgotpassword" template="/WEB-INF/pages/home/forgotpassword.jsp" />
+	
+	<!-- Pages for different web modules -->
+	
+	<!-- Configure DHISv2 Server -->
+	<definition name="configure" 
+		template="/WEB-INF/pages/configuration/configureDhis2.jsp" />
+		
+	<definition name="upload" 
+		template="/WEB-INF/pages/configuration/loadReportDefinitions.jsp" />
+		
+	<definition name="listreports" 
+		template="/WEB-INF/pages/configuration/listDhis2Reports.jsp" />
+		
+	<definition name="editReportDefinition" 
+		template="/WEB-INF/pages/configuration/editReportDefinition.jsp" />
+	
+	<definition name="setupReport" 
+		template="/WEB-INF/pages/configuration/setupReport.jsp" />
+	
+	<definition name="addLocation" 
+		template="/WEB-INF/pages/configuration/addLocation.jsp" />
+	
+	<definition name="editLocation" 
+		template="/WEB-INF/pages/configuration/editLocation.jsp" />
+	
+	<definition name="listlocation" 
+		template="/WEB-INF/pages/configuration/listlocation.jsp" />
+	
+</tiles-definitions>

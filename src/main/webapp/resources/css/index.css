@@ -1,0 +1,353 @@
+#header img{
+	width:780px;
+	margin:auto;
+}
+#content,#gridwrapper{
+	margin:auto;
+}
+body{
+	background: #FFFFFF;
+	color: #7D7B7A;
+    font-size: 14px;
+    line-height: 2;
+    word-wrap: break-word;
+}
+
+h3{
+	border-bottom: 1px solid #E7E7E7;
+    font-size: 36px;
+    line-height: 36px;
+    margin: 0 0 24px;
+    padding: 0 0 12px;
+}
+
+h3 small {
+    font-size: 14px;
+}
+
+.styled-select select {
+   width: 268px;
+   background: transparent;
+   padding: 5px;
+   font-size: 16px;
+   line-height: 1;
+   border: 0;
+   border-radius: 0;
+   height: 34px;
+   -webkit-appearance: none;
+}
+   
+   .styled-select {
+   width: 240px;
+   overflow: hidden;
+   background: url(../images/arrow.jpg) no-repeat right #ddd;
+   border: 1px solid #ccc;
+}
+
+a {
+    color: #7CADDE;
+    text-decoration: none;
+    transition: color 0.2s linear 0s;
+}
+
+
+body, .gkMenu > ul div.childcontent li, .gkMenu > ul > li a small {
+    font-family: Arial,Helvetica,sans-serif;
+}
+
+.gkPopupWrap,.fieldShadow, .fieldShadow2{
+    padding: 28px;
+}
+
+form{
+	margin:0px;
+}
+
+#login-form fieldset,.fieldShadow fieldset, .fieldShadow2 fieldset {
+    margin: 0 0 36px;
+}
+
+fieldset {
+    border: medium none;
+    margin: 0;
+    padding: 0;
+}
+#login-form fieldset p,.fieldShadow fieldset p,.fieldShadow2 fieldset p{
+    margin: 0.5em 0;
+}
+
+label {
+	display:block;
+    font-size: 13px;
+}
+#login-form input[type="text"], #login-form input[type="password"]{
+    width: 90%;
+}
+textarea, input[type="text"], input[type="password"], input[type="url"], input[type="email"] {
+    -moz-border-bottom-colors: none;
+    -moz-border-left-colors: none;
+    -moz-border-right-colors: none;
+    -moz-border-top-colors: none;
+    -moz-box-sizing: border-box;
+    border-color: #CCCCCC #E7E7E7 #E7E7E7;
+    border-image: none;
+    border-right: 1px solid #E7E7E7;
+    border-style: solid;
+    border-width: 1px;
+    color: #555555;
+    font-size: 14px;
+    height: 34px;
+    line-height: 35px;
+    max-width: 100% !important;
+    padding: 0 12px;
+}
+button, input, select, textarea {
+    font-size: 100%;
+    margin: 0;
+    vertical-align: baseline;
+}
+html, button, input, select, textarea {
+    font-family: sans-serif;
+}
+button, a.button, input.button, span.button, button.button, div.button, input[type="submit"],input[type="button"], .pagenav-prev a, .pagenav-next a, a.readon, .itemReadMore {
+    background: none repeat scroll 0 0 #222222;
+    border: medium none;
+    border-radius: 2px 2px 2px 2px;
+    color: #FFFFFF;
+    cursor: pointer;
+    display: inline-block;
+    font-size: 13px;
+    font-weight: bold;
+    height: 32px;
+    line-height: 32px;
+    margin: 1px 5px 2px 2px;
+    padding: 0 12px;
+    text-align: center;
+    transition: background-color 0.12s ease-out 0s;
+}
+button, a.button, input.button, span.button, button.button, div.button, input[type="submit"], input[type="button"], .pagenav-prev a, .pagenav-next a, a.readon, .itemReadMore {
+    background: none repeat scroll 0 0 #222222;
+    border: medium none;
+    border-radius: 2px 2px 2px 2px;
+    color: #FFFFFF;
+    cursor: pointer;
+    display: inline-block;
+    font-size: 13px;
+    font-weight: bold;
+    height: 32px;
+    line-height: 32px;
+    margin: 1px 5px 2px 2px;
+    padding: 0 12px;
+    text-align: center;
+    transition: background-color 0.12s ease-out 0s;
+}
+button, input[type="button"], input[type="reset"], input[type="submit"],a.button {
+    cursor: pointer;
+}
+button, input {
+    line-height: normal;
+}
+button, input, select, textarea {
+    font-size: 100%;
+    margin: 0;
+    vertical-align: baseline;
+}
+#gkPopupLogin ,.fieldShadow, .fieldShadow2{
+    display: block;
+    opacity: 1;
+}
+#gkPopupLogin {
+    margin:auto;
+    width: 320px;
+}
+#gkPopupOverlay, #gkPopupLogin,.fieldShadow, .fieldShadow2 {
+	/*
+    background: none repeat scroll 0 0 #FFFFFF;
+    */
+    margin:auto;
+    z-index: 1000002;
+    -moz-border-radius: 5px 20px 5px;
+	-webkit-border-radius:5px 20px 5px;
+	border-radius: 5px 20px 5px;
+	box-shadow: 2px 2px 6px rgba(0,0,0,0.6);
+}
+#wrapper{
+	width:320px;
+	margin:auto;	
+}
+
+#mainWrapper{
+	max-width:960px;
+	margin:auto;
+	-moz-border-radius: 5px 20px 5px;
+	-webkit-border-radius:5px 20px 5px;
+	border-radius: 5px 20px 5px;
+	box-shadow: 2px 2px 6px rgba(0,0,0,0.6);
+}
+.fieldShadow {
+	width:320px;
+	margin:auto;
+}
+
+.fieldShadow2 {
+	width:80%;
+	margin:auto;
+}
+#header {
+	width:780px;
+	margin:auto;
+}
+#menu{
+	margin:auto;
+	width:100%;
+}
+footer{
+ 	z-index:100;
+}
+
+#footer{
+	padding:7px;
+}
+
+#formButton input{	
+	margin:auto;	
+}
+
+#nav {
+ background: #e5e5e5;
+ float: left;
+ margin: 0; padding: 0;
+ border: 1px solid white;
+ border-bottom: none;
+ width:99.8%;
+ font-size:16px;
+}
+
+#nav li a, #nav li {
+ float: left;
+}
+
+#loginForm li {
+	list-style:none;
+}
+#nav li {
+ list-style: none;
+ position: relative;
+}
+
+#nav li a {
+ padding: 0.2em 2.33em;
+ text-decoration: none;
+ color: white;
+ background: #292929;
+ background: -moz-linear-gradient(top, black, #3c3c3c 1px, #292929 25px);
+ background: -webkit-gradient(linear, left top, left 25, from(black), color-stop(4%, #3c3c3c), to(#292929));
+ border-right: 1px solid #3c3c3c;
+ border-left: 1px solid #292929;
+ border-bottom: 1px solid #232323;
+ border-top: 1px solid #545454;
+}
+
+#nav li a:hover {
+ background: #2a0d65;
+ background: -moz-linear-gradient(top, #11032e, #2a0d65);
+ background: -webkit-gradient(linear, left top, left bottom, from(#11032e), to(#2a0d65));
+}
+
+
+/* Submenu */
+
+.hasChildren {
+	position: absolute;
+	width: 5px; height: 5px;
+	background: black;
+	right : 0;
+	bottom: 0;
+}
+
+#nav li ul {
+ display: none;
+ position: absolute;
+ left: 0;
+ top: 100%;
+ padding: 0; margin: 0;
+}
+
+#nav li:hover > ul {
+ display: block;
+}
+
+#nav li ul li, #nav li ul li a {
+ float: none;
+}
+
+#nav li ul li {
+ _display: inline; /* for IE6 */
+}
+
+#nav li ul li a {
+ width: 150px;
+ display: block;
+}
+
+/* SUBSUB Menu */
+
+#nav li ul li ul {
+ display: none;
+}
+
+#nav li ul li:hover ul {
+ left: 100%;
+ top: 0;
+}
+
+footer,#footer{
+	max-width:320px;
+}
+footer,#footer,#footer a{
+	margin:auto;	
+}
+#content{
+	min-height:350px;
+}
+.errors{
+	font-size:14px;
+	color:#ED0C1B;
+	tex-align:center;
+}
+
+tr.oddRow{
+	background-color:#eee;
+}
+tr.evenRow{
+	background-color:#fff;
+}
+
+tr:nth-child(odd)		{ background-color:#eee; }
+tr:nth-child(even)		{ background-color:#fff; }
+
+dl {
+ width:90%;
+ margin:auto;
+ overflow:hidden;
+}
+dt {
+ float:left;
+ width:50%; /* adjust the width; make sure the total of both is 100% */
+ background:#cc0;
+}
+dd {
+ float:left;
+ width:50%; /* adjust the width; make sure the total of both is 100% */
+ background:#dd0;
+}
+
+.container{
+	overflow: auto;
+	white-space: pre-wrap; /* CSS 2.1 */
+  	white-space: pre-line; /* CSS 3 (and 2.1 as well, actually) */
+    white-space: -moz-pre-wrap; /* Mozilla, since 1999 */
+    white-space: -pre-wrap; /* Opera 4-6 */
+    white-space: -o-pre-wrap; /* Opera 7 */
+	word-wrap: break-word;
+}
