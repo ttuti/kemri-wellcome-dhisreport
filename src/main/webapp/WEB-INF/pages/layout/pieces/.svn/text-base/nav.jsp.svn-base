@@ -1,8 +1,0 @@
-<%@ include file="/WEB-INF/jsp/includes/includes.jsp"%>
-<ul id="innermenu">
-	<c:forEach var="menus" items="${ASSET_ROLE}">
-		<c:if test="${menus.description != 'Home'}">
-			<li id="${PREFIX}/${menus.viewurl}" onclick="ASSET.loadMenu(this)">${menus.description}</li>
-		</c:if>
-	</c:forEach>
-</ul>

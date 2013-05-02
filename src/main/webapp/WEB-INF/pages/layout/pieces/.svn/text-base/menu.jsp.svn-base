@@ -1,5 +1,0 @@
-<%@ include file="/WEB-INF/jsp/includes/includes.jsp"%>
-<ul id="c-panel">
-	<li><a href="${PREFIX}/home/index.htm">Home ${JJTEACH_PEOPLE_NAME}</a></li>	
-</ul>
-<div id="logo_home"></div>
