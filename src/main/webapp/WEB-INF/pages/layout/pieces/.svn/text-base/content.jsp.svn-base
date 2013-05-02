@@ -1,0 +1,2 @@
+<%@ include file="/WEB-INF/jsp/includes/includes.jsp"%>
+<div id="content_loader"></div>
