@@ -1,0 +1,138 @@
+﻿
+
+img {border: none;}
+a {color: #0052af;}
+h1 {
+	font: 3.5em normal Georgia, 'Times New Roman', Times, serif;
+	margin: 15px 0 30px 0;
+}
+h1 small{
+	font: 0.3em normal Verdana, Arial, Helvetica, sans-serif;
+	text-transform:uppercase;
+	display: block;
+}
+.container {width: 900px; margin: 0 auto; font-size: 1.2em;  color: #555;}
+
+#content {	background: #f0f0f0; float: left; width: 100%;}
+
+.post {
+	margin: 0; padding: 10px 20px;
+	float: left;
+	width: 560px;
+}
+
+#backgroundPopup{
+display:none;
+position:fixed;
+_position:absolute; /* hack for internet explorer 6*/
+height:100%;
+width:100%;
+top:0;
+left:0;
+background:#000000;
+border:1px solid #cecece;
+z-index:1;
+}
+#popupContact{
+	display: none;
+	background: #fff;
+	padding: 20px; 	
+	border: 20px solid #ddd;
+	float: left;
+	font: normal 10px Verdana, Arial, Helvetica, sans-serif;
+	width: 400px; height: 200px;
+	position: fixed;
+	top: 2%; left: 2%;
+	z-index: 99999;
+	-webkit-box-shadow: 0px 0px 20px #000;
+	-moz-box-shadow: 0px 0px 20px #000;
+	box-shadow: 0px 0px 20px #000;
+}
+
+#popupContactClose{
+font-size:14px;
+line-height:14px;
+right:6px;
+top:4px;
+position:absolute;
+color:#6fa5fd;
+font-weight:700;
+display:block;
+}
+
+#popupWarning{
+	display: none;
+	background: #fff;
+	padding: 20px; 	
+	border: 20px solid #ddd;
+	float: left;
+	font: normal 10px Verdana, Arial, Helvetica, sans-serif;
+	width: 400px; height: 200px;
+	position: fixed;
+	cursor:hand;
+	top: 2%; left: 2%;
+	z-index: 99999;
+	-webkit-box-shadow: 0px 0px 20px #000;
+	-moz-box-shadow: 0px 0px 20px #000;
+	box-shadow: 0px 0px 20px #000;
+}
+
+#popupWarningClose{
+font-size:14px;
+line-height:14px;
+right:6px;
+top:4px;
+position:absolute;
+color:#6fa5fd;
+font-weight:700;
+display:block;
+}
+
+#popupBlocked{
+	display: none;
+	background: #fff;
+	padding: 20px; 	
+	border: 20px solid #ddd;
+	float: left;
+	font: normal 10px Verdana, Arial, Helvetica, sans-serif;
+	width: 400px; height: 200px;
+	position: fixed;
+	top: 2%; left: 2%;
+	cursor:hand;
+	z-index: 99999;
+	-webkit-box-shadow: 0px 0px 20px #000;
+	-moz-box-shadow: 0px 0px 20px #000;
+	box-shadow: 0px 0px 20px #000;
+}
+
+#popupBlockedClose{
+font-size:14px;
+line-height:14px;
+right:6px;
+top:4px;
+position:absolute;
+color:#6fa5fd;
+font-weight:700;
+display:block;
+}
+
+#button{
+text-align:center;
+margin:100px;
+}
+
+#clickWarning{
+text-align:center;
+margin:100px;
+}
+
+#clickBlocked{
+text-align:center;
+margin:100px;
+}
+
+
+img.btn_close {
+	float: right; 
+	margin: -37px -45px 0 0;
+}
