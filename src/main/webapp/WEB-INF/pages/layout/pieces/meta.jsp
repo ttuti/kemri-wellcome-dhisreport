@@ -5,5 +5,5 @@
 <meta name="language" content="en-us, english" />
 <meta name="author" content="www.hazelband.com" />
 <meta content="width=device-width, initial-scale=1" name="viewport" />
-<meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
 <meta name="HandheldFriendly" content="true">

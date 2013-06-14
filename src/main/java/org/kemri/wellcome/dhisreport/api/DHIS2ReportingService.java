@@ -23,6 +23,8 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.Collection;
 
+import org.hisp.dhis.dxf2.importsummary.ImportConflict;
+import org.hisp.dhis.dxf2.importsummary.ImportCount;
 import org.hisp.dhis.dxf2.importsummary.ImportSummary;
 import org.kemri.wellcome.dhisreport.api.dxf2.DataValueSet;
 import org.kemri.wellcome.dhisreport.api.model.*;
@@ -68,6 +70,14 @@ public interface DHIS2ReportingService
      */
     @Transactional( readOnly = true )
     public DataElement getDataElement( Integer id );
+    
+    /**
+     * 
+     * @param id
+     * @return
+     */
+    @Transactional( readOnly = true )
+    public ImportSummary getImportSummary( Integer id );
 
     /**
      * @param uid
@@ -82,7 +92,84 @@ public interface DHIS2ReportingService
      */
     @Transactional
     public DataElement saveDataElement( DataElement de );
-
+    
+    /**
+     * @param ic
+     * @return
+     */
+    @Transactional
+    public ImportCount saveImportCount( ImportCount ic );
+    
+    /**
+     * 
+     * @param id
+     * @return
+     */
+    @Transactional
+    public User getUser( Integer id );
+    
+    /**
+     * 
+     * @param username
+     * @return
+     */
+    @Transactional
+    public User getUserByUsername( String username );
+    
+    /**
+     * 
+     * @param email
+     * @return
+     */
+    @Transactional
+    public User getUserByEmail( String email );
+    
+    /**
+     * 
+     * @param user
+     * @return
+     */
+    @Transactional
+    public User saveUser( User user );
+    
+    /**
+     * 
+     * @param id
+     * @return
+     */
+    @Transactional
+    public Role getRole( Integer id );
+    
+    /**
+     * 
+     * @param roleName
+     * @return
+     */
+    @Transactional
+    public Role getRoleByName( String roleName );
+    
+    /**
+     * 
+     * @return
+     */
+    @Transactional
+    public Collection<Role> getAllRoles();
+    
+    /**
+     * @param icf
+     * @return
+     */
+    @Transactional
+    public ImportConflict saveImportConflict( ImportConflict icf );
+    
+    /**
+     * 
+     * @param is
+     * @return
+     */
+    @Transactional
+    public ImportSummary saveImportSummary( ImportSummary is );
+    
     /**
      * @param de
      */
@@ -126,6 +213,13 @@ public interface DHIS2ReportingService
      */
     @Transactional
     public void purgeDisaggregation( Disaggregation disagg );
+    
+    /**
+     * 
+     * @return
+     */
+    @Transactional
+    public void autoPostToDhis();
 
     /**
      * @return

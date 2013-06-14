@@ -19,11 +19,8 @@
  **/
 package org.kemri.wellcome.dhisreport.api.db.hibernate;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
-import java.util.ListIterator;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -33,6 +30,9 @@ import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.criterion.Restrictions;
+import org.hisp.dhis.dxf2.importsummary.ImportConflict;
+import org.hisp.dhis.dxf2.importsummary.ImportCount;
+import org.hisp.dhis.dxf2.importsummary.ImportSummary;
 import org.kemri.wellcome.dhisreport.api.DHIS2ReportingException;
 import org.kemri.wellcome.dhisreport.api.db.DHIS2ReportingDAO;
 import org.kemri.wellcome.dhisreport.api.model.DataElement;
@@ -41,6 +41,8 @@ import org.kemri.wellcome.dhisreport.api.model.Disaggregation;
 import org.kemri.wellcome.dhisreport.api.model.Identifiable;
 import org.kemri.wellcome.dhisreport.api.model.Location;
 import org.kemri.wellcome.dhisreport.api.model.ReportDefinition;
+import org.kemri.wellcome.dhisreport.api.model.Role;
+import org.kemri.wellcome.dhisreport.api.model.User;
 import org.kemri.wellcome.dhisreport.api.utils.Period;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Propagation;
@@ -63,6 +65,12 @@ public class HibernateDHIS2ReportingDAO implements DHIS2ReportingDAO {
 	public DataElement getDataElement(Integer id) {
 		Session session = entityManager.unwrap(Session.class);
 		return (DataElement) session.get(DataElement.class, id);
+	}
+	
+	@Override
+	public ImportSummary getImportSummary(Integer id) {
+		Session session = entityManager.unwrap(Session.class);
+		return (ImportSummary) session.get(ImportSummary.class, id);
 	}
 
 	@Override
@@ -140,7 +148,7 @@ public class HibernateDHIS2ReportingDAO implements DHIS2ReportingDAO {
 			Period period, Location location) throws DHIS2ReportingException {
 		String queryString = dvt.getQuery();
 		if (queryString == null || queryString.isEmpty()) {
-			log.debug("Empty query for " + dvt.getDataelement().getName()
+			log.error("Empty query for " + dvt.getDataelement().getName()
 					+ " : " + dvt.getDisaggregation().getName());
 			return null;
 		}
@@ -154,23 +162,14 @@ public class HibernateDHIS2ReportingDAO implements DHIS2ReportingDAO {
 
 		Session session = entityManager.unwrap(Session.class);
 		Query query = session.createSQLQuery(queryString);
-
-		List<String> parameters = new ArrayList<String>(Arrays.asList(query
-				.getNamedParameters()));
-		log.error("\n parameter list size: " + parameters.size());
-		ListIterator<String> listIterator = parameters.listIterator();
-		while (listIterator.hasNext()) {
-			log.error("\n parameter: " + listIterator.next());
-		}
-		log.error("\n startOfPeriod: " + period.getStart());
-		log.error("\n endOfPeriod: " + period.getEnd());
-		log.error("\n locationName: " + location.getName());
-		log.error("\n");
 		query.setParameter("locationName", location.getName());
-		query.setParameter("startOfPeriod", period.getStart());
-		query.setParameter("endOfPeriod", period.getEnd());
-
-		return query.uniqueResult().toString();
+		query.setParameter("startPeriod", period.getStart());
+		query.setParameter("endPeriod", period.getEnd());
+		Object object= query.uniqueResult();
+		if(object !=null)
+			return query.uniqueResult().toString();
+		else
+			return null;
 	}
 
 	// --------------------------------------------------------------------------------------------------------------
@@ -182,18 +181,45 @@ public class HibernateDHIS2ReportingDAO implements DHIS2ReportingDAO {
 		criteria.add(Restrictions.eq("uid", uid));
 		return (Identifiable) criteria.uniqueResult();
 	}
+	
+	public DataValueTemplate getDataValueTemplate(ReportDefinition reportDefinition,DataElement dataelement,Disaggregation disaggregation) {
+		Session session = entityManager.unwrap(Session.class);
+		Criteria criteria = session.createCriteria(DataValueTemplate.class);
+		criteria.add(Restrictions.eq("reportDefinition", reportDefinition));
+		criteria.add(Restrictions.eq("dataelement", dataelement));
+		criteria.add(Restrictions.eq("disaggregation", disaggregation));
+		return (DataValueTemplate) criteria.uniqueResult();
+	}
+	
+	public Identifiable getObjectByName(String name, Class<?> clazz) {
+		Session session = entityManager.unwrap(Session.class);
+		Criteria criteria = session.createCriteria(clazz);
+		criteria.add(Restrictions.eq("name", name));
+		return (Identifiable) criteria.uniqueResult();
+	}
 
 	public Identifiable saveObject(Identifiable object) {
 		Session session = entityManager.unwrap(Session.class);
 
 		// force merge if uid already exists
 		Identifiable existingObject = getObjectByUid(object.getUid(),
+				object.getClass());		
+		
+		// force merge if name already exists but replace uid
+		Identifiable existingObject2 = getObjectByName(object.getName(),
 				object.getClass());
+		
+		String uid= object.getUid();			
 		if (existingObject != null) {
 			session.evict(existingObject);
 			object.setId(existingObject.getId());
 			session.load(object, object.getId());
+		}else if(existingObject == null && existingObject2 !=null){
+			session.evict(existingObject2);
+			object.setId(existingObject2.getId());
+			session.load(object, object.getId());
 		}
+		object.setUid(uid);		
 		session.saveOrUpdate(object);
 		return object;
 	}
@@ -264,5 +290,69 @@ public class HibernateDHIS2ReportingDAO implements DHIS2ReportingDAO {
 		Session session = entityManager.unwrap(Session.class);
 		Query query = session.createQuery("from Location");
 		return (List<Location>) query.list();
+	}
+
+	@Override
+	public ImportSummary saveImportSummary(ImportSummary im) {
+		return (ImportSummary) saveObject(im);
+	}
+
+	@Override
+	public ImportCount saveImportCount(ImportCount ic) {
+		return (ImportCount) saveObject(ic);
+	}
+
+	@Override
+	public ImportConflict saveImportConflict(ImportConflict icf) {
+		return (ImportConflict) saveObject(icf);
+	}
+
+	@Override
+	public User getUser(Integer id) {
+		Session session = entityManager.unwrap(Session.class);
+		return (User) session.get(User.class, id);
+	}
+
+	@Override
+	public User getUserByUsername(String username) {
+		Session session = entityManager.unwrap(Session.class);
+		Criteria criteria = session.createCriteria(User.class);
+		criteria.add(Restrictions.like("username", "%" + username + "%"));
+		return (User) criteria.uniqueResult();
+	}
+
+	@Override
+	public User getUserByEmail(String email) {
+		Session session = entityManager.unwrap(Session.class);
+		Criteria criteria = session.createCriteria(User.class);
+		criteria.add(Restrictions.like("email", "%" + email + "%"));
+		return (User) criteria.uniqueResult();
+	}
+
+	@Override
+	public Role getRole(Integer id) {
+		Session session = entityManager.unwrap(Session.class);
+		return (Role) session.get(Role.class, id);
+	}
+
+	@Override
+	public Role getRoleByName(String roleName) {
+		Session session = entityManager.unwrap(Session.class);
+		Criteria criteria = session.createCriteria(Role.class);
+		criteria.add(Restrictions.like("roleName", "%" + roleName + "%"));
+		return (Role) criteria.uniqueResult();
+	}
+
+	@Override
+	public User saveUser(User user) {
+		return (User) saveObject(user);
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public Collection<Role> getAllRoles() {
+		Session session = entityManager.unwrap(Session.class);
+		Query query = session.createQuery("from Role");
+		return (List<Role>) query.list();
 	}
 }

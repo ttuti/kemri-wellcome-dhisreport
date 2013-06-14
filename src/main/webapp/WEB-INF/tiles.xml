@@ -75,5 +75,23 @@
 	
 	<definition name="listlocation" 
 		template="/WEB-INF/pages/configuration/listlocation.jsp" />
+		
+	<definition name="listuser" 
+		template="/WEB-INF/pages/configuration/listuser.jsp" />
+		
+	<definition name="adduser" 
+		template="/WEB-INF/pages/configuration/addUser.jsp" />
+	
+	<definition name="edituser" 
+		template="/WEB-INF/pages/configuration/editUser.jsp" />
+	
+	<definition name="dbsetup" 
+		template="/WEB-INF/pages/configuration/configureDatabase.jsp" />
+	
+	<definition name="summary" 
+		template="/WEB-INF/pages/configuration/summary.jsp" />
+		
+	<definition name="summarydetails" 
+		template="/WEB-INF/pages/configuration/summarydetails.jsp" />
 	
 </tiles-definitions>

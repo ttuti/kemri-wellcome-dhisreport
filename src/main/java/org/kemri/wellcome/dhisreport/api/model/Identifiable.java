@@ -33,4 +33,8 @@ public interface Identifiable
     public Integer getId();
 
     public void setId( Integer uid );
+    
+    public String getName();
+    
+    public void setName(String name);
 }

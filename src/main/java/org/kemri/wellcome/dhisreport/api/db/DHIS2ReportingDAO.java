@@ -21,12 +21,17 @@ package org.kemri.wellcome.dhisreport.api.db;
 
 import java.util.Collection;
 
+import org.hisp.dhis.dxf2.importsummary.ImportConflict;
+import org.hisp.dhis.dxf2.importsummary.ImportCount;
+import org.hisp.dhis.dxf2.importsummary.ImportSummary;
 import org.kemri.wellcome.dhisreport.api.DHIS2ReportingException;
 import org.kemri.wellcome.dhisreport.api.DHIS2ReportingService;
 import org.kemri.wellcome.dhisreport.api.model.DataElement;
 import org.kemri.wellcome.dhisreport.api.model.DataValueTemplate;
 import org.kemri.wellcome.dhisreport.api.model.Disaggregation;
 import org.kemri.wellcome.dhisreport.api.model.ReportDefinition;
+import org.kemri.wellcome.dhisreport.api.model.Role;
+import org.kemri.wellcome.dhisreport.api.model.User;
 import org.kemri.wellcome.dhisreport.api.utils.Period;
 import org.kemri.wellcome.dhisreport.api.model.Location;
 
@@ -39,12 +44,36 @@ public interface DHIS2ReportingDAO
     public DataElement getDataElement( Integer id );
 
     public DataElement getDataElementByUid( String uid );
+    
+    public User getUser( Integer id );
+
+    public User getUserByUsername( String username );
+    
+    public DataValueTemplate getDataValueTemplate(ReportDefinition reportDefinition,DataElement dataelement,Disaggregation disaggregation);
+    
+    public User getUserByEmail( String email );
+    
+    public User saveUser( User user );
+    
+    public Role getRole( Integer id );
+
+    public Role getRoleByName( String roleName );
+    
+    public ImportSummary getImportSummary( Integer id );
 
     public DataElement saveDataElement( DataElement de );
+    
+    public ImportCount saveImportCount( ImportCount ic );
+    
+    public ImportConflict saveImportConflict( ImportConflict icf );
+    
+    public ImportSummary saveImportSummary( ImportSummary is );
 
     public void deleteDataElement( DataElement de );
 
     public Collection<DataElement> getAllDataElements();
+    
+    public Collection<Role> getAllRoles();
     
     public Collection<Location> getAllLocations();
 

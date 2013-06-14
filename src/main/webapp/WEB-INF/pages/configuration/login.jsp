@@ -31,9 +31,6 @@
 						<input type="submit" value="Log in" class="button" name="Submit">
 					</div>	
 				</fieldset>
-					<ul>
-						<li> <a href="/free/may2012/index.php/template/lorem-ipsum-ii/users/password-reset"> Forgot your password?</a> </li>
-					</ul>
 			</form>							
 		</div>
 	</div>	     

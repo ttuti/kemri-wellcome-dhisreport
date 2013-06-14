@@ -12,7 +12,7 @@ public class InitListener implements ServletContextListener,
 	
 	public static String PREFIX = "context";
 	protected final Logger log = Logger.getLogger(InitListener.class);
-
+	
 	public void contextInitialized(ServletContextEvent arg0) {
 		String pr = arg0.getServletContext().getContextPath();
 		ServletContext ctx = arg0.getServletContext();

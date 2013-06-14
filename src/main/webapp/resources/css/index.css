@@ -2,11 +2,12 @@
 	width:780px;
 	margin:auto;
 }
-#content,#gridwrapper{
+#content,#gridwrapper,.ui-jqgrid{
 	margin:auto;
 }
 body{
 	background: #FFFFFF;
+	-pie-background:#FFFFFF;
 	color: #7D7B7A;
     font-size: 14px;
     line-height: 2;
@@ -14,8 +15,20 @@ body{
 }
 
 h3{
+	behavior: url(PIE.htc);
 	border-bottom: 1px solid #E7E7E7;
+	position: relative;
     font-size: 36px;
+    line-height: 36px;
+    margin: 0 0 24px;
+    padding: 0 0 12px;
+}
+
+h2{
+	behavior: url(PIE.htc);
+	border-bottom: 1px solid #E7E7E7;
+	position: relative;
+    font-size: 16px;
     line-height: 36px;
     margin: 0 0 24px;
     padding: 0 0 12px;
@@ -25,29 +38,13 @@ h3 small {
     font-size: 14px;
 }
 
-.styled-select select {
-   width: 268px;
-   background: transparent;
-   padding: 5px;
-   font-size: 16px;
-   line-height: 1;
-   border: 0;
-   border-radius: 0;
-   height: 34px;
-   -webkit-appearance: none;
-}
-   
-   .styled-select {
-   width: 240px;
-   overflow: hidden;
-   background: url(../images/arrow.jpg) no-repeat right #ddd;
-   border: 1px solid #ccc;
-}
-
 a {
+	behavior: url(PIE.htc);
     color: #7CADDE;
     text-decoration: none;
+    position: relative;
     transition: color 0.2s linear 0s;
+    position: relative;
 }
 
 
@@ -72,7 +69,7 @@ fieldset {
     margin: 0;
     padding: 0;
 }
-#login-form fieldset p,.fieldShadow fieldset p,.fieldShadow2 fieldset p{
+#login-form fieldset p,.fieldShadow fieldset p,.fieldShadow2 fieldset p, .paragraph{
     margin: 0.5em 0;
 }
 
@@ -80,15 +77,40 @@ label {
 	display:block;
     font-size: 13px;
 }
+
+.replace{
+	display:inline-block;
+	margin:3px;
+}
 #login-form input[type="text"], #login-form input[type="password"]{
     width: 90%;
 }
 textarea, input[type="text"], input[type="password"], input[type="url"], input[type="email"] {
+	behavior: url(PIE.htc);
     -moz-border-bottom-colors: none;
     -moz-border-left-colors: none;
     -moz-border-right-colors: none;
     -moz-border-top-colors: none;
     -moz-box-sizing: border-box;
+    
+    -o-border-bottom-colors: none;
+    -o-border-left-colors: none;
+    -o-border-right-colors: none;
+    -o-border-top-colors: none;
+    -o-box-sizing: border-box;
+    
+    -webkit-border-bottom-colors: none;
+    -webkit-border-left-colors: none;
+    -webkit-border-right-colors: none;
+    -webkit-border-top-colors: none;
+    -webkit-box-sizing: border-box;
+    
+    border-bottom-colors: none;
+    border-left-colors: none;
+    border-right-colors: none;
+    border-top-colors: none;
+    box-sizing: border-box;
+    
     border-color: #CCCCCC #E7E7E7 #E7E7E7;
     border-image: none;
     border-right: 1px solid #E7E7E7;
@@ -99,7 +121,9 @@ textarea, input[type="text"], input[type="password"], input[type="url"], input[t
     height: 34px;
     line-height: 35px;
     max-width: 100% !important;
-    padding: 0 12px;
+    padding: 0 12px;  
+    position:relative;
+    behavior: url(PIE.htc);  
 }
 button, input, select, textarea {
     font-size: 100%;
@@ -110,6 +134,7 @@ html, button, input, select, textarea {
     font-family: sans-serif;
 }
 button, a.button, input.button, span.button, button.button, div.button, input[type="submit"],input[type="button"], .pagenav-prev a, .pagenav-next a, a.readon, .itemReadMore {
+    behavior: url(PIE.htc);
     background: none repeat scroll 0 0 #222222;
     border: medium none;
     border-radius: 2px 2px 2px 2px;
@@ -123,9 +148,12 @@ button, a.button, input.button, span.button, button.button, div.button, input[ty
     margin: 1px 5px 2px 2px;
     padding: 0 12px;
     text-align: center;
+    position:relative;
     transition: background-color 0.12s ease-out 0s;
+    behavior: url(PIE.htc);
 }
 button, a.button, input.button, span.button, button.button, div.button, input[type="submit"], input[type="button"], .pagenav-prev a, .pagenav-next a, a.readon, .itemReadMore {
+    behavior: url(PIE.htc);
     background: none repeat scroll 0 0 #222222;
     border: medium none;
     border-radius: 2px 2px 2px 2px;
@@ -140,8 +168,10 @@ button, a.button, input.button, span.button, button.button, div.button, input[ty
     padding: 0 12px;
     text-align: center;
     transition: background-color 0.12s ease-out 0s;
+    behavior: url(PIE.htc);
 }
 button, input[type="button"], input[type="reset"], input[type="submit"],a.button {
+	behavior: url(PIE.htc);
     cursor: pointer;
 }
 button, input {
@@ -153,10 +183,12 @@ button, input, select, textarea {
     vertical-align: baseline;
 }
 #gkPopupLogin ,.fieldShadow, .fieldShadow2{
+	behavior: url(PIE.htc);
     display: block;
     opacity: 1;
 }
 #gkPopupLogin {
+	behavior: url(PIE.htc);
     margin:auto;
     width: 320px;
 }
@@ -164,12 +196,22 @@ button, input, select, textarea {
 	/*
     background: none repeat scroll 0 0 #FFFFFF;
     */
+    behavior: url(PIE.htc);
     margin:auto;
     z-index: 1000002;
     -moz-border-radius: 5px 20px 5px;
 	-webkit-border-radius:5px 20px 5px;
+	-o-border-radius:5px 20px 5px;	
+	-moz-box-shadow: 2px 2px 6px rgba(0,0,0,0.6);
+	-webkit-box-shadow: 2px 2px 6px rgba(0,0,0,0.6);
+	-o-box-shadow: 2px 2px 6px rgba(0,0,0,0.6);
 	border-radius: 5px 20px 5px;
-	box-shadow: 2px 2px 6px rgba(0,0,0,0.6);
+	box-shadow: 2px 2px 6px rgba(0,0,0,0.6);	
+	filter: progid:DXImageTransform.Microsoft.Shadow(strength = 2, direction = 135, color = '#000000');
+	-ms-filter: "progid:DXImageTransform.Microsoft.Shadow(strength = 2, Direction = 135, Color = '#000000')";
+		
+	zoom: 1;
+	behavior: url(PIE.htc);
 }
 #wrapper{
 	width:320px;
@@ -177,12 +219,21 @@ button, input, select, textarea {
 }
 
 #mainWrapper{
+	behavior: url(PIE.htc);
 	max-width:960px;
 	margin:auto;
 	-moz-border-radius: 5px 20px 5px;
 	-webkit-border-radius:5px 20px 5px;
+	-o-border-radius:5px 20px 5px;
+	-moz-box-shadow: 2px 2px 6px rgba(0,0,0,0.6);
+	-webkit-box-shadow: 2px 2px 6px rgba(0,0,0,0.6);
+	-o-box-shadow: 2px 2px 6px rgba(0,0,0,0.6);
 	border-radius: 5px 20px 5px;
 	box-shadow: 2px 2px 6px rgba(0,0,0,0.6);
+	-ms-filter:progid:DXImageTransform.Microsoft.Shadow(color='#00FF00', Direction=90, Strength=3);
+	filter: progid:DXImageTransform.Microsoft.Shadow(color='#00FF00', Direction=90, Strength=3);
+	zoom: 1;
+	behavior: url(PIE.htc);
 }
 .fieldShadow {
 	width:320px;
@@ -216,15 +267,19 @@ footer{
 #nav {
  background: #e5e5e5;
  float: left;
- margin: 0; padding: 0;
+ margin: 0; 
+ padding: 0;
  border: 1px solid white;
  border-bottom: none;
  width:99.8%;
  font-size:16px;
+ position:relative;
+ behavior: url(PIE.htc);
 }
 
 #nav li a, #nav li {
  float: left;
+ position:relative;
 }
 
 #loginForm li {
@@ -236,22 +291,40 @@ footer{
 }
 
 #nav li a {
- padding: 0.2em 2.33em;
+ behavior: url(PIE.htc);
+ padding: 0.2em 2.41em;
  text-decoration: none;
+ overflow:hidden;
+ position:relative;
  color: white;
  background: #292929;
  background: -moz-linear-gradient(top, black, #3c3c3c 1px, #292929 25px);
  background: -webkit-gradient(linear, left top, left 25, from(black), color-stop(4%, #3c3c3c), to(#292929));
+ filter:  progid:DXImageTransform.Microsoft.gradient(startColorStr='#3c3c3c', EndColorStr='#292929' gradientType='0'); /* IE6,IE7 */
+ -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorStr='#3c3c3c', EndColorStr='#292929' gradientType='0')"; /* IE8 */
+ background: -ms-linear-gradient(top, #3c3c3c, #292929);
  border-right: 1px solid #3c3c3c;
  border-left: 1px solid #292929;
  border-bottom: 1px solid #232323;
  border-top: 1px solid #545454;
+ behavior: url(PIE.htc);
 }
 
 #nav li a:hover {
+behavior: url(PIE.htc);
  background: #2a0d65;
  background: -moz-linear-gradient(top, #11032e, #2a0d65);
  background: -webkit-gradient(linear, left top, left bottom, from(#11032e), to(#2a0d65));
+ filter:  progid:DXImageTransform.Microsoft.gradient(startColorStr='#11032e', EndColorStr='#2a0d65' gradientType='0'); /* IE6,IE7 */
+ -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorStr='#11032e', EndColorStr='#2a0d65' gradientType='0')"; /* IE8 */
+ background: -ms-linear-gradient(top, #11032e, #2a0d65);
+ behavior: url(PIE.htc);
+}
+
+#nav li a img{
+	border:none;
+	border-color:none;
+	border-style:none;
 }
 
 
@@ -316,10 +389,10 @@ footer,#footer,#footer a{
 	tex-align:center;
 }
 
-tr.oddRow{
+.oddRow{
 	background-color:#eee;
 }
-tr.evenRow{
+.evenRow{
 	background-color:#fff;
 }
 
@@ -334,12 +407,12 @@ dl {
 dt {
  float:left;
  width:50%; /* adjust the width; make sure the total of both is 100% */
- background:#cc0;
+ background:#D7D7D7;
 }
 dd {
  float:left;
  width:50%; /* adjust the width; make sure the total of both is 100% */
- background:#dd0;
+ background:#EFEFEF;
 }
 
 .container{
@@ -350,4 +423,91 @@ dd {
     white-space: -pre-wrap; /* Opera 4-6 */
     white-space: -o-pre-wrap; /* Opera 7 */
 	word-wrap: break-word;
+}
+
+div.styled-select { 
+	behavior: url(PIE.htc);
+    overflow:hidden; /* this hides the select's drop button */ 
+    padding:0; 
+    margin:0; 
+    background: white url(../images/arrow.jpg) no-repeat bottom right; 
+    /* this is the new drop button, in image form */ 
+    width:12em; 
+    border-radius:2px; 
+    box-shadow: 0 1px 3px rgba(0,0,0,0.2); 
+    border: solid 1px #ccc; 
+    behavior: url(PIE.htc);
+}
+
+div.styled-select select {
+    width:115% /* this percentage effectively extends the drop down button out of view */;
+    background-color:transparent /* this hides the select's background making any styling visible from the div */;
+    background-image:none;
+    -webkit-appearance: none /* this is required for Webkit browsers */;
+    border:none;
+    font-size: 14px;
+    height: 34px;
+    line-height: 35px;
+    box-shadow:none;
+    padding:0.3em 0.5em; /* padding should be added to the select, not the div */
+}
+
+.ie7 div.styled-select {border:none; }
+.ie7 div.styled-select select {
+    width:100%;
+    background-color:white;
+    border: solid 1px #ccc;
+    padding:0.3em 0.5em;
+}
+
+.ui-jqgrid tr.jqgrow td {
+	word-wrap: break-word; /* IE 5.5+ and CSS3 */
+    white-space: pre-wrap; /* CSS3 */
+    white-space: normal !important; /* Mozilla, since 1999 */
+    white-space: -pre-wrap; /* Opera 4-6 */
+    white-space: -o-pre-wrap; /* Opera 7 */
+ 	height:auto;
+ 	vertical-align:middle;
+ 	overflow: hidden;
+}
+
+tr.ui-jqgrid-labels,tr.ui-search-toolbar{
+	height:34px;
+}
+
+dl {
+    margin-bottom:20px;
+}
+ 
+dl dt {
+    background:#5f9be3;
+    color:#fff;
+    float:left;
+    font-weight:bold;
+    margin-right:10px;
+    padding:5px; 
+    width:40%;
+}
+ 
+dl dd {
+    margin:2px 0;
+    padding:5px 0;
+    width:60%;
+}
+
+.code div,.code code, .code pre{
+	white-space: -moz-pre-wrap !important;  /* Mozilla, since 1999 */
+	white-space: -pre-wrap;      /* Opera 4-6 */
+	white-space: -o-pre-wrap;    /* Opera 7 */
+	white-space: pre-wrap;       /* css-3 */
+	word-wrap: break-word;       /* Internet Explorer 5.5+ */
+	white-space: normal;
+	overflow: hidden;
+}
+code{
+	display:block;
+}
+
+.menuResize{
+	padding: 0.2em 8.56em;
 }

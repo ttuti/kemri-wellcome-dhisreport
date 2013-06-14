@@ -21,12 +21,18 @@ package org.kemri.wellcome.controller;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import org.apache.log4j.Logger;
+import org.hisp.dhis.dxf2.importsummary.ImportConflict;
+import org.hisp.dhis.dxf2.importsummary.ImportCount;
+import org.hisp.dhis.dxf2.importsummary.ImportStatus;
 import org.hisp.dhis.dxf2.importsummary.ImportSummary;
 import org.kemri.wellcome.dhisreport.api.model.JqGridFilter;
 import org.kemri.wellcome.dhisreport.api.model.JqGridObjectMapper;
@@ -42,6 +48,7 @@ import org.kemri.wellcome.dhisreport.api.dto.LocationDTO;
 import org.kemri.wellcome.dhisreport.api.dto.ReportDefinitionDTO;
 import org.kemri.wellcome.dhisreport.api.dto.ReportExecute;
 import org.kemri.wellcome.dhisreport.api.dxf2.DataValueSet;
+import org.kemri.wellcome.dhisreport.api.utils.DateUtils;
 import org.kemri.wellcome.dhisreport.api.utils.MonthlyPeriod;
 import org.kemri.wellcome.dhisreport.api.utils.Period;
 import org.kemri.wellcome.dhisreport.api.utils.WeeklyPeriod;
@@ -160,7 +167,7 @@ public class ReportController
     }
 
     @RequestMapping( value = Views.SETUP_REPORT, method = RequestMethod.POST )
-    public @ResponseBody Map<String, ? extends Object> executeReport(
+    public @ResponseBody Map<String, ? extends Object> setupReport(
     	   @RequestBody ReportExecute reportExecute){
         Period period;
         Date reportDate = null;
@@ -178,19 +185,64 @@ public class ReportController
         }
 
         // Get Location by OrgUnit Code
+        ReportDefinition report = service.getReportDefinition( reportExecute.getReportDefinationId());
         Location location = service.getLocationByOU_Code( reportExecute.getLocation() );
-        DataValueSet dvs = service.evaluateReportDefinition( service.getReportDefinition( reportExecute.getReportDefinationId() ),
+        DataValueSet dvs = service.evaluateReportDefinition( report,
             period, location );
-        // Set OrgUnit code into DataValueSet
-        dvs.setOrgUnit( reportExecute.getLocation() );        
-        ImportSummary importSummary;
-		try {
-			importSummary = service.postDataValueSet( dvs );
-		} catch (DHIS2ReportingException e) {
-			log.error(e.getMessage());
-			return Collections.singletonMap("u", e.getMessage());
-		}            
-        return Collections.singletonMap("u", importSummary);
+        if(dvs!= null){
+        	// Set OrgUnit code into DataValueSet
+            log.error("\n DVS Returned: "+dvs.toString()+"\n");
+            
+            dvs.setOrgUnit( reportExecute.getLocation() );        
+            ImportSummary importSummary=new ImportSummary();
+    		try {
+    			importSummary = service.postDataValueSet( dvs );
+    		} catch (DHIS2ReportingException e) {
+    			log.error(e.getMessage());
+    			return Collections.singletonMap("importSummary", e.getMessage());
+    		}
+    		importSummary.setReportName(report.getName());
+    		importSummary.setReportDate(DateUtils.stringToDate(DateUtils.getToday()));
+    		importSummary.getDataValueCount().setUid(UUID.randomUUID().toString());
+    		importSummary.getDataValueCount().setImportSummary(importSummary);
+    		List<ImportConflict> conflicts = new ArrayList<ImportConflict>();
+    		if(importSummary.getConflicts() !=null){
+    			for(ImportConflict conflict:importSummary.getConflicts()){
+    				conflict.setImportSummary(importSummary);
+    				conflict.setUid(UUID.randomUUID().toString());
+    				conflict.setName(UUID.randomUUID().toString());
+    				conflicts.add(conflict);
+    			}	
+    			importSummary.setConflicts(conflicts);				
+    		}			
+    		importSummary = service.saveImportSummary(importSummary);
+    		log.info("User:"+service.getUsername()+" executed report template :"+importSummary.getReportName()+" on "+Calendar.getInstance().getTime());
+    		return Collections.singletonMap("importSummary", importSummary);
+        }
+        
+        
+        ImportSummary importSummary = new ImportSummary();  
+    	importSummary.setStatus(ImportStatus.ERROR);
+    	importSummary.setUid(UUID.randomUUID().toString());
+    	importSummary.setName(UUID.randomUUID().toString());
+		importSummary.setReportName(report.getName());
+		importSummary.setDescription("Error posting to DHISv2. No matching parameters on the server");
+		importSummary.setReportDate(DateUtils.stringToDate(DateUtils.getToday())); 
+		importSummary.setDataSetComplete("false");
+		
+		ImportCount importCount = new ImportCount();
+    	importCount.setIgnored(0);
+    	importCount.setImported(0);
+    	importCount.setUpdated(0);
+    	importCount.setUid(UUID.randomUUID().toString());
+    	importCount.setName(UUID.randomUUID().toString());
+    	importCount.setImportSummary(importSummary);        	
+    	importSummary.setDataValueCount(importCount);
+    	
+    	importSummary = service.saveImportSummary(importSummary);
+    	log.info("User:"+service.getUsername()+" executed report template :"+importSummary.getReportName()+" on "+Calendar.getInstance().getTime());
+		return Collections.singletonMap("importSummary", importSummary);
+                
     }
     
     
@@ -265,7 +317,8 @@ public class ReportController
 			@RequestBody Location location){
     	
     	if(service.getLocationByOU_Code(location.getName())==null){
-    		service.saveLocation(location);	        
+    		service.saveLocation(location);	  
+    		log.info("User:"+service.getUsername()+" added location :"+location.getName()+" on "+Calendar.getInstance().getTime());
         	return Collections.singletonMap("u", "Saved");
     	}
     	return Collections.singletonMap("u", "Location already exists");	
@@ -279,11 +332,21 @@ public class ReportController
         return Views.EDIT_LOCATION;
     }
     
+    @RequestMapping( value = Views.SUMMARY_DETAILS, method = RequestMethod.GET )
+    public String summaryDetails( Model model, @RequestParam( value = "id", required = false )
+    Integer summary_id )
+    {
+    	model.addAttribute( "summary", service.getImportSummary(summary_id) );
+    	model.addAttribute( "count", service.getImportSummary(summary_id).getDataValueCount().toString() );
+    	return Views.SUMMARY_DETAILS;
+    }
+    
     @RequestMapping(value = Views.EDIT_LOCATION, method = RequestMethod.POST)
 	public @ResponseBody Map<String, ? extends Object> editLocation(
 			@RequestBody Location location){
     	
     	service.saveLocation(location);
+    	log.info("User:"+service.getUsername()+" edited location :"+location.getName()+" on "+Calendar.getInstance().getTime());
     	return Collections.singletonMap("u", "Saved");	
 	}
     
@@ -292,7 +355,8 @@ public class ReportController
         @RequestParam( value = "id", required = false )
         Integer location_id)
     {
-        Location ln = service.getLocation(location_id);               
+        Location ln = service.getLocation(location_id);
+        log.info("User:"+service.getUsername()+" deleted location :"+ln.getName()+" on "+Calendar.getInstance().getTime());
         service.purgeLocation(ln);
         return Views.LIST_LOCATION;
     }

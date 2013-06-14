@@ -3,6 +3,12 @@
 <!DOCTYPE html>
 <html lang="en-gb">
 <head>
+	<sec:authorize access="hasAnyRole('ROLE_USER')">
+		<c:set var="usertype" value="user" />
+	</sec:authorize>
+	<sec:authorize access="hasAnyRole('ROLE_ADMIN')">
+		<c:set var="usertype" value="admin" />
+	</sec:authorize>
 	<tiles:insertAttribute name="meta" />
 	<title>
 		<tiles:insertAttribute name="title" />
@@ -10,6 +16,13 @@
 	<tiles:insertAttribute name="header" />
 	<tiles:insertAttribute name="common-scripts" />
 </head>
+<script type="text/javascript">
+//browser microsoft-msie
+//version microsoft-8.0
+var browser = $j.browser.name;
+var version = $j.browser.version; 
+
+</script>
 <body class="nobg" data-loading-translation="Loading" data-content-width="2" data-blocks-animation="1" data-mobile-width="480" data-tablet-width="800">
 	<script type="text/javascript">
 		var prefix = "${prefix}";
@@ -45,6 +58,20 @@
 	     	</div>
 	     </footer>    
 	     <!-- end footer --> 			
-	</div>		
+	</div>
+	<script type="text/javascript">
+    $j().ready(function(){
+        KWTRDI.ajaxLoad('/summary');
+        if('${usertype}'=='user'){
+        	$j('#nav li a').each(function() {
+		        $j(this).addClass("menuResize");
+	    	});
+        }else{
+        	$j('#nav li a').each(function() {
+	    		$j(this).removeClass("menuResize");
+	    	});
+        }
+    });
+    </script>		
 </body>
 </html>

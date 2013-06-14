@@ -27,31 +27,94 @@ package org.hisp.dhis.dxf2.importsummary;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.io.Serializable;
+import java.util.Date;
 import java.util.List;
+import java.util.UUID;
+
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
 import javax.xml.bind.annotation.*;
+
+import org.codehaus.jackson.annotate.JsonIgnoreProperties;
+import org.codehaus.jackson.annotate.JsonManagedReference;
+import org.kemri.wellcome.dhisreport.api.model.Identifiable;
 
 @XmlAccessorType( XmlAccessType.FIELD )
 @XmlRootElement( name = "importSummary" )
-public class ImportSummary
+@Entity
+@Table(name= ImportSummary.TABLE_NAME)
+@JsonIgnoreProperties(ignoreUnknown=true)
+public class ImportSummary implements Serializable, Identifiable
 {
+	private static final long serialVersionUID = -1515831250492632236L;
+
+	public static final String TABLE_NAME="import_summary";
+	
+	@XmlTransient
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name="id")
+    protected Integer id;
+	
+	@XmlTransient
+    @Column(name="uid", unique=true)
+    protected String uid;
+	
+	@XmlTransient
+    @Column(name="report_name")
+    protected String reportName;
+	
+	@XmlTransient
+    @Column(name="report_date")
+    protected Date reportDate;
+	
     @XmlElement( required = true )
+    @Column(name="status", nullable=false)
+    @Enumerated(EnumType.STRING)
     private ImportStatus status;
 
     @XmlElement( required = true )
+    @Column(name="description", nullable=false)
     private String description;
-
+    
     @XmlElement( required = true )
+    @JsonManagedReference
+    @OneToOne(mappedBy="importSummary", fetch = FetchType.LAZY, cascade= CascadeType.PERSIST)
     private ImportCount dataValueCount;
-
+    
     @XmlElementWrapper( name = "conflicts", required = false )
     @XmlElement( name = "conflict" )
+    @JsonManagedReference
+    @OneToMany(mappedBy="importSummary", fetch = FetchType.LAZY, cascade= CascadeType.PERSIST)
     private List<ImportConflict> conflicts;
 
     @XmlElement( required = true )
+    @Column(name="dataset_complete", nullable=false)
     private String dataSetComplete;
+    
+    @XmlTransient
+    @Column(name = "name",nullable=false, unique = true)
+    private String name;
 
     public ImportSummary()
     {
+    	if(uid == null){
+    		uid = UUID.randomUUID().toString();
+    	}
+    	if(name == null){
+    		name = uid;
+    	}
     }
 
     public ImportSummary( ImportStatus status, String description )
@@ -109,4 +172,57 @@ public class ImportSummary
     {
         this.dataSetComplete = dataSetComplete;
     }
+
+	@Override
+	public String getUid() {
+		if(uid==null || uid.isEmpty())
+			uid=UUID.randomUUID().toString();
+		return uid;
+	}
+
+	@Override
+	public void setUid(String uid) {
+		if(uid==null || uid.isEmpty())
+			uid=UUID.randomUUID().toString();
+		this.uid=uid;
+		this.name=uid;
+	}
+
+	@Override
+	public Integer getId() {
+		return id;
+	}
+
+	@Override
+	public void setId(Integer id) {
+		this.id=id;		
+	}
+
+	public String getReportName() {
+		return reportName;
+	}
+
+	public void setReportName(String reportName) {
+		this.reportName = reportName;
+	}
+
+	public Date getReportDate() {
+		return reportDate;
+	}
+
+	public void setReportDate(Date reportDate) {
+		this.reportDate = reportDate;
+	}
+
+	@Override
+	public String getName() {
+		name = uid;
+		return name;
+	}
+
+	@Override
+	public void setName(String name) {
+		this.name = name;
+		
+	}
 }

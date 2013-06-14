@@ -17,19 +17,19 @@ public abstract class AbstractPersistentEntity implements PersistentEntity,Seria
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name="id")
-	private Long id;
+	private Integer id;
 
 	@Version
 	@Column(name = "version")
 	private int version=0;
 
 	@Override
-	public Long getId() {
+	public Integer getId() {
 		return id;
 	}
 
 	@Override
-	public void setId(Long id) {
+	public void setId(Integer id) {
 		this.id = id;
 
 	}

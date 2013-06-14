@@ -21,6 +21,7 @@ package org.kemri.wellcome.controller;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.Map;
 
@@ -67,16 +68,16 @@ public class ReportDefinitionController
 	public @ResponseBody Map<String, ? extends Object> upload(
 		   @RequestParam("file") MultipartFile file, 
 			Model model) throws IOException{
-    	log.error("\n File :"+file.getOriginalFilename()+"\n");
-		InputStream is = file.getInputStream();
+    	InputStream is = file.getInputStream();
         try{
-        	log.error("\n File content type :"+file.getContentType()+"\n");
-            service.unMarshallandSaveReportTemplates( is );
+        	service.unMarshallandSaveReportTemplates( is );
         }catch ( Exception ex ){
+        	log.error(ex.getMessage());
         	ex.printStackTrace();
         } finally{
             is.close();
-        }       
+        }
+        log.info("User:"+service.getUsername()+" uploaded the report template :"+file.getOriginalFilename()+" on "+Calendar.getInstance().getTime());
         return Collections.singletonMap("u", "Saved");
 	} 
 
@@ -108,8 +109,9 @@ public class ReportDefinitionController
         ReportDefinition rd = service.getReportDefinition( reportDefinition_id );
         for(DataValueTemplate dvt: rd.getDataValueTemplates()){
         	service.purgeDataValueTemplate(dvt);
-        }        
-        service.purgeReportDefinition( rd );
+        }
+        log.info("User:"+service.getUsername()+" deleted report template :"+rd.getName()+" on "+Calendar.getInstance().getTime());
+        service.purgeReportDefinition( rd );        
         return Views.LIST_REPORT;
     }
 
@@ -121,7 +123,7 @@ public class ReportDefinitionController
     {
         DataValueTemplate dvt = service.getDataValueTemplate( dataValueTemplate_id );
         dvt.setQuery( dataValueTemplate_query );
-
+        log.info("User:"+service.getUsername()+" updated data value template :"+dvt.getId()+":"+dataValueTemplate_query+" on "+Calendar.getInstance().getTime());
         service.saveDataValueTemplate( dvt );
 
         model.addAttribute( "dataValueTemplate", dvt );

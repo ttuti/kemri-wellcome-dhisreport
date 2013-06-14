@@ -46,7 +46,20 @@
 	<bean class="org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor"/>
 
 	<!-- Helps get the annotation based mappings and validations -->
-	<mvc:annotation-driven />	
+	<mvc:annotation-driven />
+	
+	<!-- Activates @Scheduled and @Async annotations for scheduling -->
+ 	<task:annotation-driven executor="dhisExecutor" scheduler="dhisScheduler" />
+ 	
+ 	<!-- Defines a ThreadPoolTaskExecutor instance with configurable pool size, queue-capacity, keep-alive,
+    and rejection-policy values. The id becomes the default thread name prefix -->
+ 	<task:executor id="dhisExecutor"
+                pool-size="5-25"
+                queue-capacity="100"/>
+   
+  	<!-- Defines a ThreadPoolTaskScheduler instance with configurable pool size.
+    The id becomes the default thread name prefix. -->             
+  	<task:scheduler id="dhisScheduler" pool-size="1"/>
 	
 	<mvc:resources mapping="/resources/**" location="/resources/" />
 	
@@ -135,15 +148,7 @@
 			</list>
 		</property>	
 	</bean>
-    <!--  
-    <bean id="viewResolver" class="org.springframework.web.servlet.view.UrlBasedViewResolver">
-		<property name="viewClass">
-			<value>
-				org.springframework.web.servlet.view.tiles2.TilesView
-			</value>
-		</property>				
-	</bean>
-	-->
+    
 	<bean id="tilesConfigurer"
 		class="org.springframework.web.servlet.view.tiles2.TilesConfigurer">
 		<property name="definitions">

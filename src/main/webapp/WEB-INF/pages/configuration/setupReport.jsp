@@ -5,29 +5,29 @@
 		<form:form method="post" modelAttribute="reportExecute">
 			<form:hidden path="reportDefinationId" />	
 			<div id="errors" class="errors"></div>
-			<p>
+			<div class="paragraph">
 				<label for="frequency">Report Frequency:</label>
-				<span class="styled-select">
+				<div class="styled-select">
 					<select name="frequency" required="required">
 						<option value="Weekly">Weekly</option>
 						<option value="Monthly">Monthly</option>
 					</select>
-				</span>
-			</p>
-			<p>
+				</div>
+			</div>
+			<div class="paragraph">
 				<label for="location">Location:</label>
-				<span class="styled-select">
+				<div class="styled-select">
 				 <select name="location" required="required"> 
                     <c:forEach var="location" items="${locations}" >
                         <option value="${location.name}">${location.name}</option>
                     </c:forEach>
                 </select>
-                </span>
-			</p>
-			<p>
+                </div>
+			</div>
+			<div class="paragraph">
 				<label for="date">Date:</label>
 				<form:input path="date" required="required" />
-			</p>
+			</div>
 			<div id="formButton">
 				<input type="submit" value="Post To DHIS" class="button">
 			</div>
@@ -62,14 +62,13 @@
 
     function doaction(data) 
     {
-        var importSummary = data.u.importSummary;
+        var importSummary = data.importSummary;
         var status = importSummary.status;
         var desc = importSummary.description;
-        var count = importSummary.dataValueCount;
-        var snippet = "<dl><dt>Status</dt><dd>"+status+"</dd><dt>Description</dt><dd>"+desc+"</dd><dt>Count</dt><dd>"+count+"</dd></dl>";
+        var snippet = "<dl><dt>Status</dt><dd>"+status+"</dd><dt>Description</dt><dd>"+desc+"</dd></dl>";
+        $j('#errors').html(snippet);
         setTimeout(function(){
-        	$j('#errors').html(snippet);
-			KWTRDI.ajaxLoad('/report/listlocation');
-		},2000);
+        	KWTRDI.ajaxLoad('/report/listreports');
+		},5000);
     }    
 </script>

@@ -27,22 +27,74 @@ package org.hisp.dhis.dxf2.importsummary;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.io.Serializable;
+import java.util.UUID;
+
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
 import javax.xml.bind.annotation.*;
 
+import org.codehaus.jackson.annotate.JsonBackReference;
+import org.codehaus.jackson.annotate.JsonIgnoreProperties;
+import org.kemri.wellcome.dhisreport.api.model.Identifiable;
+
+@Entity
+@Table(name=ImportCount.TABLE_NAME)
 @XmlAccessorType( XmlAccessType.FIELD )
-public class ImportCount
+@JsonIgnoreProperties(ignoreUnknown=true)
+public class ImportCount implements Serializable, Identifiable
 {
-    @XmlAttribute( required = true )
+	private static final long serialVersionUID = -5319134589685978965L;
+
+	public static final String TABLE_NAME ="import_count";
+	
+	@XmlTransient
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name="id")
+	private Integer id;
+	
+	@XmlTransient
+	@Column(name="uid", unique=true)
+	private String uid;
+	
+	@XmlAttribute( required = true )
+	@Column(name="imported", nullable=false)
     private int imported;
 
     @XmlAttribute( required = true )
+    @Column(name="updated", nullable=false)
     private int updated;
 
     @XmlAttribute( required = true )
+    @Column(name="ignored", nullable=false)
     private int ignored;
+    
+    @XmlTransient
+    @OneToOne(cascade= CascadeType.PERSIST)
+    @JoinColumn(name="import_summary_id",nullable=false)
+    @JsonBackReference
+    private ImportSummary importSummary;
+    
+    @XmlTransient
+    @Column(name="name",nullable=false, unique = true)
+    private String name;
 
     public ImportCount()
     {
+    	if(uid == null){
+    		uid = UUID.randomUUID().toString();
+    	}
+    	if(name == null){
+    		name = uid;
+    	}
     }
 
     public ImportCount( int imported, int updated, int ignored )
@@ -81,11 +133,11 @@ public class ImportCount
     {
         this.ignored = ignored;
     }
-
+    
     @Override
     public String toString()
     {
-        return "[imports=" + imported + ", updates=" + updated + ", ignores=" + ignored + "]";
+        return "[imports = " + imported + ", updates = " + updated + ", ignores = " + ignored + "]";
     }
 
     public void incrementImported()
@@ -117,4 +169,44 @@ public class ImportCount
     {
         ignored += n;
     }
+
+	public Integer getId() {
+		return id;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
+	}
+
+	public String getUid() {
+		if(uid==null || uid.isEmpty())
+			uid=UUID.randomUUID().toString();
+		return uid;
+	}
+
+	public void setUid(String uid) {
+		if(uid==null || uid.isEmpty())
+			uid=UUID.randomUUID().toString();
+		this.uid = uid;
+		this.name=uid;
+	}
+
+	public ImportSummary getImportSummary() {
+		return importSummary;
+	}
+
+	public void setImportSummary(ImportSummary importSummary) {
+		this.importSummary = importSummary;
+	}
+
+	@Override
+	public String getName() {
+		name = uid;
+		return name;
+	}
+
+	@Override
+	public void setName(String name) {
+		this.name = name;		
+	}
 }

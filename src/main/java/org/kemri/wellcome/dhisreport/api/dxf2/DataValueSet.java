@@ -202,6 +202,11 @@ public class DataValueSet
     {
         return period;
     }
+    
+    @Override
+    public String toString(){
+    	return "[Period : "+period+", Dataset:"+dataSet+"]";
+    }
 
     /**
      * Sets the value of the period property.

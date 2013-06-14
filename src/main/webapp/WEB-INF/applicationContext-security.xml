@@ -53,13 +53,18 @@ EntityManagerFactory
 -->
 	<beans:bean id="entityManagerFactory" 
           class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean"
-          p:packagesToScan="org.kemri.wellcome.dhisreport.api.model"
           p:dataSource-ref="dataSource"
+          p:packagesToScan-ref="jpaPackages"
 		  p:jpaVendorAdapter-ref="hibernateVendor"
- 		  p:jpaPropertyMap-ref="jpaPropertyMap"/>       
-    
+ 		  p:jpaPropertyMap-ref="jpaPropertyMap" />
+ 		  
+  	<util:list id="jpaPackages">
+  		<beans:value>org.kemri.wellcome.dhisreport.api.model</beans:value>
+  		<beans:value>org.hisp.dhis.dxf2.importsummary</beans:value>
+  	</util:list>
+  	
     <beans:bean id="hibernateVendor" class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter"
-	p:showSql="false"/>
+	p:showSql="true"/>
 	
 	 <util:map id="jpaPropertyMap">
 	 	<beans:entry key="hibernate.hbm2ddl.auto" value="update" />
@@ -81,13 +86,25 @@ EntityManagerFactory
 	<beans:bean id="passwordEncoder"  class="org.springframework.security.authentication.encoding.MessageDigestPasswordEncoder">
     	<beans:constructor-arg value="MD5" />    
 	</beans:bean>
-
-	<authentication-manager> 
+	
+	<!--
+	    Default Username/Password is
+	        kwtrp/@Dmin2o13!
+    -->
+	<authentication-manager>
+		<authentication-provider>
+	        <password-encoder ref="passwordEncoder"/>
+	        <user-service>
+	            <user name="${security.username}" password="${security.password}" authorities="ROLE_ADMIN, ROLE_USER" />
+		    </user-service>
+		</authentication-provider> 
 		<authentication-provider>
   			<password-encoder ref="passwordEncoder"/>
     		<jdbc-user-service data-source-ref="secureDataSource"/>
   		</authentication-provider>
 	</authentication-manager>
+	
+	
 </beans:beans>
 
 

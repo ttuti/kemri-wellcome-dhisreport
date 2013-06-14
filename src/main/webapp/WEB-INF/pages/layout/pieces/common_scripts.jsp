@@ -11,6 +11,7 @@ response.setHeader("Pragma","no-cache");
 <script type="text/javascript" src="<c:url value="/resources/js/jquery.jqGrid.min.js"/>"></script>
 <script type="text/javascript" src="<c:url value="/resources/js/json.min.js"/>"></script>
 <script type="text/javascript" src="<c:url value="/resources/js/jquery-ui-1.10.2.custom.min.js"/>"></script>
+<script type="text/javascript" src="<c:url value="/resources/js/jquery.browser.min.js"/>"></script>
 <script type="text/javascript" src="<c:url value="/resources/js/scripts.js"/>"></script>
 <script type="text/javascript" src="<c:url value="/resources/js/jquery.fileupload.js"/>"></script>
 <script type="text/javascript" src="<c:url value="/resources/js/jquery.iframe-transport.js"/>"></script>

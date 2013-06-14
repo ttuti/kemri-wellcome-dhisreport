@@ -32,7 +32,6 @@ import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
 import org.apache.log4j.Logger;
-import org.apache.commons.io.IOUtils;
 import org.apache.http.Header;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpHost;
@@ -44,7 +43,6 @@ import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.auth.BasicScheme;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.protocol.BasicHttpContext;
-import org.hisp.dhis.dxf2.importsummary.ImportStatus;
 import org.hisp.dhis.dxf2.importsummary.ImportSummary;
 import org.kemri.wellcome.dhisreport.api.DHIS2ReportingException;
 import org.kemri.wellcome.dhisreport.api.dhis.Dhis2Server;
@@ -173,7 +171,9 @@ public class HttpDhis2Server extends AbstractPersistentEntity implements Dhis2Se
 
         try
         {
-            HttpPost httpPost = new HttpPost( getUrl().getPath() + DATAVALUESET_PATH );
+        	String postUrl = getUrl().toString()+DATAVALUESET_PATH;
+        	log.error("Post URL: "+postUrl);
+            HttpPost httpPost = new HttpPost( postUrl );
             Credentials creds = new UsernamePasswordCredentials( username, password );
             Header bs = new BasicScheme().authenticate( creds, httpPost, localcontext );
             httpPost.addHeader( "Authorization", bs.getValue() );
@@ -184,19 +184,10 @@ public class HttpDhis2Server extends AbstractPersistentEntity implements Dhis2Se
             HttpResponse response = httpclient.execute( targetHost, httpPost, localcontext );
             HttpEntity entity = response.getEntity();
             
-            StringWriter writer = new StringWriter();
-            IOUtils.copy(response.getEntity().getContent(), writer, "UTF-8");
-            String theString = writer.toString();
-            
-            log.error("\n Entity: "+theString+"\n");
-
-            if ( entity != null ){
-                JAXBContext jaxbImportSummaryContext = JAXBContext.newInstance( ImportSummary.class );
+            if ( entity != null){
+            	JAXBContext jaxbImportSummaryContext = JAXBContext.newInstance( ImportSummary.class );
                 Unmarshaller importSummaryUnMarshaller = jaxbImportSummaryContext.createUnmarshaller();
-                summary = (ImportSummary) importSummaryUnMarshaller.unmarshal( entity.getContent() );
-            }else{
-                summary = new ImportSummary();
-                summary.setStatus( ImportStatus.ERROR );
+                summary = (ImportSummary)importSummaryUnMarshaller.unmarshal(entity.getContent());               
             }
         }
         catch ( Exception ex ){
@@ -212,6 +203,7 @@ public class HttpDhis2Server extends AbstractPersistentEntity implements Dhis2Se
     public ReportDefinition fetchReportTemplates()
         throws Dhis2Exception
     {
+    	log.error("Dhis2Exception : Not supported yet.");
         throw new UnsupportedOperationException( "Not supported yet." );
     }
 }

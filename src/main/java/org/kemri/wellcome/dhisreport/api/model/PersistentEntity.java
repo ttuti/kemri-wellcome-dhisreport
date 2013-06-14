@@ -7,7 +7,7 @@ public interface PersistentEntity {
      * 
      * @return id Primary key identifier.
      */
-    Long getId();
+	Integer getId();
 
     /**
      * Sets the primary key identifier. WARNING: Setting the identifier is
@@ -16,7 +16,7 @@ public interface PersistentEntity {
      * 
      * @param id Primary key identifier.
      */
-    void setId(Long id);
+    void setId(Integer id);
 
     /**
      * Returns the version number, (can be used to manage optimistic locking).

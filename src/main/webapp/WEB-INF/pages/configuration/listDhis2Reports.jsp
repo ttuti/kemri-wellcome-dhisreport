@@ -18,13 +18,13 @@ $j(function() {
                 } ,width:25,search:false			
 			},
 			{
-				name : 'id', index: 'id'			
+				name : 'id', index: 'id',width:40			
 			}, 
 			{
 				name : 'name', index: 'name'
 			},
 			{
-				name : 'code', index: 'code'
+				name : 'code', index: 'code',width:100
 			}
 			],		
 			postData : {},
@@ -32,7 +32,7 @@ $j(function() {
 			rowList : [ 5, 10, 20, 40 ],
 			height: 'auto',
 			autowidth : true,
-			shrinkToFit: false,
+			shrinkToFit: true,
 			rownumbers : true,
 			pager : '#reportpager',
 			sortname : 'id',
@@ -89,12 +89,18 @@ $j(function() {
     }
 </script>
 	<div id="gridwrapper">
+	
+		<sec:authorize access="hasAnyRole('ROLE_ADMIN')">
+		
 		<button id="edit_report" disabled="disabled" class="button" onclick="KWTRDI.ajaxEdit('/reportdefinition/editReportDefinition',selectedId);">
 			Edit
 		</button>
 		<button id="delete_report" disabled="disabled" class="button" onclick="KWTRDI.ajaxEdit('/reportdefinition/deleteReportDefinition',selectedId);">
 			Delete
 		</button>
+		
+		</sec:authorize>
+		
 		<button id="execute_report" disabled="disabled" class="button" onclick="KWTRDI.ajaxEdit('/report/setupReport',selectedId);">
 			Execute
 		</button>

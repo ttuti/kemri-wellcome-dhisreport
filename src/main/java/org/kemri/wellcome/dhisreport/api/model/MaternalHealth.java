@@ -1,7 +1,7 @@
 /*
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
- */
+ 
 package org.kemri.wellcome.dhisreport.api.model;
 
 import java.io.Serializable;
@@ -17,10 +17,10 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
-/**
+*//**
  *
  * @author ttuti
- */
+ *//*
 @Entity
 @Table(name = "maternal_health")
 public class MaternalHealth implements Serializable {
@@ -290,3 +290,4 @@ public class MaternalHealth implements Serializable {
     }
     
 }
+*/

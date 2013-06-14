@@ -32,7 +32,7 @@ $j(function() {
 			rowList : [ 5, 10, 20, 40 ],
 			height: 'auto',
 			autowidth : true,
-			shrinkToFit: false,
+			shrinkToFit: true,
 			rownumbers : true,
 			pager : '#locationpager',
 			sortname : 'id',

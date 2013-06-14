@@ -28,9 +28,10 @@
 ================================================================================
 Bean configuring data source details
 ================================================================================
--->    
-    <bean id="dataSource" 
-          class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+-->
+
+	<bean id="dataSource"
+			class="org.springframework.jdbc.datasource.DriverManagerDataSource">
         <property name="driverClassName" value="${jdbc.driverClassName}"/>
         <property name="url" value="${jdbc.url}"/>
         <property name="username" value="${jdbc.username}"/>
@@ -58,10 +59,15 @@ EntityManagerFactory
 -->
     <bean id="entityManagerFactory" 
           class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean"
-          p:packagesToScan="org.kemri.wellcome.dhisreport.api.model"
           p:dataSource-ref="dataSource"
+          p:packagesToScan-ref="jpaPackages"         
 		  p:jpaVendorAdapter-ref="hibernateVendor"
- 		  p:jpaPropertyMap-ref="jpaPropertyMap"/>       
+ 		  p:jpaPropertyMap-ref="jpaPropertyMap" /> 
+ 	
+ 	<util:list id="jpaPackages">
+ 		<value>org.kemri.wellcome.dhisreport.api.model</value>
+ 		<value>org.hisp.dhis.dxf2.importsummary</value>
+ 	</util:list>      
     
     <bean id="hibernateVendor" class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter"
 	p:showSql="false"/>

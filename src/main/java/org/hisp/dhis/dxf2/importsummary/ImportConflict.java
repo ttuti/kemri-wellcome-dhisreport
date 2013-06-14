@@ -27,20 +27,67 @@ package org.hisp.dhis.dxf2.importsummary;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.io.Serializable;
+import java.util.UUID;
+
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlTransient;
 
+import org.codehaus.jackson.annotate.JsonBackReference;
+import org.codehaus.jackson.annotate.JsonIgnoreProperties;
+import org.kemri.wellcome.dhisreport.api.model.Identifiable;
+
+@Entity
+@Table(name=ImportConflict.TABLE_NAME)
 @XmlAccessorType( XmlAccessType.FIELD )
-public class ImportConflict
+@JsonIgnoreProperties(ignoreUnknown=true)
+public class ImportConflict implements Serializable,Identifiable
 {
-    @XmlAttribute( required = true )
+	private static final long serialVersionUID = -5319134589685978965L;
+
+	public static final String TABLE_NAME ="import_conflicts";
+	
+	@XmlTransient
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name="id")
+	private Integer id;
+	
+	@XmlTransient
+	@Column(name="uid", unique=true)
+	private String uid;
+	
+	@XmlAttribute( required = true )
+	@Column(name="object", nullable=false)
     private String object;
 
     @XmlAttribute( required = true )
+    @Column(name="value", nullable=false)
     private String value;
+    
+    @XmlTransient
+    @ManyToOne(cascade= CascadeType.PERSIST)
+    @JoinColumn(name="import_summary_id",nullable=false)
+    @JsonBackReference
+    private ImportSummary importSummary;
+    
+    @XmlTransient
+    @Column(name = "name",nullable=false, unique = true)
+    private String name;
 
     public ImportConflict(){
+    	
     }
 
     public ImportConflict( String object, String value )
@@ -72,6 +119,47 @@ public class ImportConflict
     @Override
     public String toString()
     {
-        return "ImportConflict{" + "object='" + object + '\'' + ", value='" + value + '\'' + '}';
+        return "ImportConflict{" + "object= '" + object + '\'' + ", value='" + value + '\'' + '}';
     }
+
+	public Integer getId() {
+		return id;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
+	}
+
+	public String getUid() {
+		if(uid==null || uid.isEmpty())
+			uid=UUID.randomUUID().toString();
+		return uid;
+	}
+
+	public void setUid(String uid) {
+		if(uid==null || uid.isEmpty())
+			uid=UUID.randomUUID().toString();
+		this.uid = uid;
+		this.name=uid;
+	}
+
+	public ImportSummary getImportSummary() {
+		return importSummary;
+	}
+
+	public void setImportSummary(ImportSummary importSummary) {
+		this.importSummary = importSummary;
+	}
+
+	@Override
+	public String getName() {
+		name = uid;
+		return name;
+	}
+
+	@Override
+	public void setName(String name) {
+		this.name=name;
+		
+	}
 }

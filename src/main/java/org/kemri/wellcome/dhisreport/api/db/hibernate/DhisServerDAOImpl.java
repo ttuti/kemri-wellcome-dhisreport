@@ -15,7 +15,7 @@ import org.springframework.transaction.annotation.Propagation;
 public class DhisServerDAOImpl extends GenericDAOImpl<HttpDhis2Server> implements
 		DhisServerDAO {
 	
-	private static final Logger logger = Logger.getLogger(DhisServerDAOImpl.class);
+	protected static final Logger logger = Logger.getLogger(DhisServerDAOImpl.class);
 
 	@Override
 	public void addDhisServer(HttpDhis2Server server) {
@@ -34,7 +34,6 @@ public class DhisServerDAOImpl extends GenericDAOImpl<HttpDhis2Server> implement
 		Query query = session.createQuery("SELECT i FROM "
 				+ getDomainClass().getName()+ " i ");
 		if(query.list().size() > 0){
-			logger.error("\n List size:"+query.list().size()+"\n");
 			server = (HttpDhis2Server)query.list().get(0);
 			return server;
 		}		

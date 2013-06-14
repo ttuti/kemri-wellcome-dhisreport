@@ -1,6 +1,7 @@
 package org.kemri.wellcome.dhisreport.api.model;
 
 import java.util.List;
+import java.util.UUID;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -14,13 +15,16 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = Role.TABLE_NAME)
-public class Role extends AbstractPersistentEntity implements Comparable<Role>{
+public class Role extends AbstractPersistentEntity implements Identifiable{
 
 	private static final long serialVersionUID = 8325896895395767553L;
 	public static final String TABLE_NAME = "roles";
 	
 	@Column(name = "active")
 	private int isActive=1;
+	
+	@Column(name="uid", nullable=false, unique = true)
+	private String uid;
 	
 	@Column(name = "role_name", nullable = false, unique = true)
 	private String roleName;
@@ -30,6 +34,18 @@ public class Role extends AbstractPersistentEntity implements Comparable<Role>{
 	
 	@ManyToMany(fetch = FetchType.LAZY, mappedBy = "roles")
 	private List<User> users;
+	
+	@Column(name = "name",nullable=false, unique = true)
+	private String name;
+	
+	public Role(){
+		if(uid == null){
+    		uid = UUID.randomUUID().toString();
+    	}
+    	if(name == null){
+    		name = roleName;
+    	}
+	}
 	
 	/**
 	 * 
@@ -86,13 +102,27 @@ public class Role extends AbstractPersistentEntity implements Comparable<Role>{
 	}
 
 	@Override
-	public int compareTo(Role role) {
-		if (role.getId() > getId()){
-			return -1;
+	public String getUid() {
+		if(uid==null || uid.isEmpty())
+			uid=UUID.randomUUID().toString();
+		return uid;
+	}
 
-		}else if (role.getId() < getId()){
-			return 1;
-		}
-		return 0;
+	@Override
+	public void setUid(String uid) {
+		if(uid==null || uid.isEmpty())
+			uid=UUID.randomUUID().toString();
+		this.uid=uid;		
+	}
+
+	@Override
+	public String getName() {
+		name = roleName;
+		return name;
+	}
+
+	@Override
+	public void setName(String name) {
+		this.name = name;		
 	}
 }

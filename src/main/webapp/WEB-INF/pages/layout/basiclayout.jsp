@@ -20,7 +20,7 @@
 		
         <header>
         	<div id="header">
-        		<img src="<c:url value="/resources/images/logo.jpg"/>" alt="KEMRI/Wellcome Trust Programme Logo" style="width:280px;"/>
+        		<img src="<c:url value="/resources/images/logo1.png"/>" alt="KEMRI/Wellcome Trust Programme Logo" style="width:280px;"/>
         	</div>        	
         </header>
          <!-- end header -->         
