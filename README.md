@@ -52,3 +52,5 @@ Installation
   %TOMCAT7_HOME%/webapps/
 
 6.Start the Tomcat7 server if not started
+
+7.Find the tutorial on how to use it in the following page: https://github.com/ttuti/kemri-wellcome-dhisreport/wiki
