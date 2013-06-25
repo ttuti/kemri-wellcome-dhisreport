@@ -8,16 +8,23 @@ Prerequisites
 1.An installation of Java Development Kit (JDK) 1.6 or higher. For windows
   users, the JDK installation should be included in the environment path
   i.e append 
+  
 	%JAVA_HOME%/bin to system path (%JAVA_HOME% being path to JDK
         installation)
+        
 2.An Installation of Apache Tomcat 7 on the server or local machine
+
 3.An installation of Apache Maven 3.0.5. For windows users, the Apache Maven
   installation should be included in the enviromnent path i.e. append
+  
         %MVN_HOME%/bin to system path (%MVN_HOME% being path to Apache Maven
         installation)
+        
 4.An installation of MySQL server 5.x in the production environment with the 
   database of the data you want to report/post to DHISv2.
+  
 5.An internet connection
+
 
 
 Installation
