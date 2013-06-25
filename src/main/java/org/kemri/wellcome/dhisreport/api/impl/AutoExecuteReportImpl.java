@@ -79,7 +79,7 @@ public class AutoExecuteReportImpl implements AutoExecuteReport {
 				importSummary.setDataSetComplete("false");
 				try {
 					int count = 0;
-					StringBuilder builder = new StringBuilder();
+					StringBuilder builder = new StringBuilder("");
 					log.error("\n Cron AutoExecute Report "+ DateUtils.getToday()+"\n");
 					for(DataValue dv : dataValueSet.getDataValues()){
 						log.error("\n "+dv.getDataElement()+":"+dv.getValue()+"\n");
@@ -87,7 +87,7 @@ public class AutoExecuteReportImpl implements AutoExecuteReport {
 							builder.append(dv.getDataElement());
 							builder.append(":");
 							builder.append(dv.getValue());
-							builder.append("\n");
+							builder.append(";");
 							count +=1;
 						}							
 					}	

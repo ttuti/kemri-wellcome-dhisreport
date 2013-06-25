@@ -199,7 +199,7 @@ public class ReportController
         Location location = service.getLocationByOU_Code( reportExecute.getLocation() );
         DataValueSet dvs = service.evaluateReportDefinition( report,period, location );
         if(dvs.getError()!=null && dvs.getError().equalsIgnoreCase("ERROR")){
-        	StringBuilder builder = new StringBuilder();
+        	StringBuilder builder = new StringBuilder("");
         	for(DataValue dv : dvs.getDataValues()){        		
         		builder.append(dv.getError());
         		builder.append(";");

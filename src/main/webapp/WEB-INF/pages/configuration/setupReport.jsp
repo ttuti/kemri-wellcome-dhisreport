@@ -31,7 +31,7 @@
 			</div>
 			<div id="formButton">
 				<input type="submit" value="Post To DHIS" class="button">
-				<button onClick="KWTRDI.ajaxLoad('/report/listreports')" id="back" class="button">Back</button>
+				<a onClick="KWTRDI.ajaxLoad('/report/listreports')" id="back" class="button">Back</a>
 			</div>
 		</form:form>
 	</fieldset>
