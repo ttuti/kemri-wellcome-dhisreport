@@ -182,7 +182,7 @@ public class HttpDhis2Server extends AbstractPersistentEntity implements Dhis2Se
 
             httpPost.setEntity( new StringEntity( xmlReport.toString() ) );
             HttpResponse response = httpclient.execute( targetHost, httpPost, localcontext );
-            HttpEntity entity = response.getEntity();
+            HttpEntity entity = response.getEntity();            
             
             if ( entity != null){
             	JAXBContext jaxbImportSummaryContext = JAXBContext.newInstance( ImportSummary.class );

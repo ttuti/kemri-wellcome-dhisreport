@@ -150,7 +150,7 @@ public class HibernateDHIS2ReportingDAO implements DHIS2ReportingDAO {
 		if (queryString == null || queryString.isEmpty()) {
 			log.error("Empty query for " + dvt.getDataelement().getName()
 					+ " : " + dvt.getDisaggregation().getName());
-			return null;
+			return "No results returned for query";
 		}
 
 		if (dvt.potentialUpdateDelete()) {
@@ -165,11 +165,12 @@ public class HibernateDHIS2ReportingDAO implements DHIS2ReportingDAO {
 		query.setParameter("locationName", location.getName());
 		query.setParameter("startPeriod", period.getStart());
 		query.setParameter("endPeriod", period.getEnd());
-		Object object= query.uniqueResult();
+		
+		Object object= query.uniqueResult();		
 		if(object !=null)
 			return query.uniqueResult().toString();
-		else
-			return null;
+		
+	    return "No results returned for query";
 	}
 
 	// --------------------------------------------------------------------------------------------------------------

@@ -47,6 +47,7 @@ import org.kemri.wellcome.dhisreport.api.DhisServerService;
 import org.kemri.wellcome.dhisreport.api.dto.LocationDTO;
 import org.kemri.wellcome.dhisreport.api.dto.ReportDefinitionDTO;
 import org.kemri.wellcome.dhisreport.api.dto.ReportExecute;
+import org.kemri.wellcome.dhisreport.api.dxf2.DataValue;
 import org.kemri.wellcome.dhisreport.api.dxf2.DataValueSet;
 import org.kemri.wellcome.dhisreport.api.utils.DateUtils;
 import org.kemri.wellcome.dhisreport.api.utils.MonthlyPeriod;
@@ -183,28 +184,46 @@ public class ReportController
         }else{
         	period = new WeeklyPeriod( reportDate );
         }
-
-        // Get Location by OrgUnit Code
+        
+        //prepare import summary
+        ImportSummary importSummary = new ImportSummary();  
+    	importSummary.setStatus(ImportStatus.ERROR);
+    	importSummary.setUid(UUID.randomUUID().toString());
+    	importSummary.setName(reportExecute.getReportDefinitionName());
+		importSummary.setDescription("Error posting to DHISv2. No matching parameters on the server");
+		importSummary.setReportDate(DateUtils.stringToDate(DateUtils.getToday())); 
+		importSummary.setDataSetComplete("false");
+				
+		// Get Location by OrgUnit Code
         ReportDefinition report = service.getReportDefinition( reportExecute.getReportDefinationId());
         Location location = service.getLocationByOU_Code( reportExecute.getLocation() );
-        DataValueSet dvs = service.evaluateReportDefinition( report,
-            period, location );
-        if(dvs!= null){
-        	// Set OrgUnit code into DataValueSet
-            log.error("\n DVS Returned: "+dvs.toString()+"\n");
-            
-            dvs.setOrgUnit( reportExecute.getLocation() );        
-            ImportSummary importSummary=new ImportSummary();
+        DataValueSet dvs = service.evaluateReportDefinition( report,period, location );
+        if(dvs.getError()!=null && dvs.getError().equalsIgnoreCase("ERROR")){
+        	StringBuilder builder = new StringBuilder();
+        	for(DataValue dv : dvs.getDataValues()){        		
+        		builder.append(dv.getError());
+        		builder.append(";");
+        	}
+        	importSummary.setReportName(reportExecute.getReportDefinitionName());  
+        	importSummary.setStatus(ImportStatus.ERROR);
+        	importSummary.setDescription(builder.toString());
+        	createImportCount(importSummary);
+        	log.info("User:"+service.getUsername()+" executed report template :"+importSummary.getReportName()+" on "+Calendar.getInstance().getTime());
+        	return Collections.singletonMap("importSummary", importSummary);
+        }else{            
+            dvs.setOrgUnit( reportExecute.getLocation() );
     		try {
     			importSummary = service.postDataValueSet( dvs );
     		} catch (DHIS2ReportingException e) {
     			log.error(e.getMessage());
-    			return Collections.singletonMap("importSummary", e.getMessage());
+    			importSummary.setReportName(reportExecute.getReportDefinitionName());  
+    			importSummary.setStatus(ImportStatus.ERROR);
+    			importSummary.setDescription(e.getMessage());
+    			createImportCount(importSummary);
+    			log.info("User:"+service.getUsername()+" executed report template :"+importSummary.getReportName()+" on "+Calendar.getInstance().getTime());
+    			return Collections.singletonMap("importSummary", importSummary);
     		}
-    		importSummary.setReportName(report.getName());
-    		importSummary.setReportDate(DateUtils.stringToDate(DateUtils.getToday()));
-    		importSummary.getDataValueCount().setUid(UUID.randomUUID().toString());
-    		importSummary.getDataValueCount().setImportSummary(importSummary);
+    		importSummary.setReportName(reportExecute.getReportDefinitionName());    		
     		List<ImportConflict> conflicts = new ArrayList<ImportConflict>();
     		if(importSummary.getConflicts() !=null){
     			for(ImportConflict conflict:importSummary.getConflicts()){
@@ -214,35 +233,12 @@ public class ReportController
     				conflicts.add(conflict);
     			}	
     			importSummary.setConflicts(conflicts);				
-    		}			
+    		}
+    		importSummary.setReportDate(DateUtils.stringToDate(DateUtils.getToday()));
     		importSummary = service.saveImportSummary(importSummary);
     		log.info("User:"+service.getUsername()+" executed report template :"+importSummary.getReportName()+" on "+Calendar.getInstance().getTime());
     		return Collections.singletonMap("importSummary", importSummary);
-        }
-        
-        
-        ImportSummary importSummary = new ImportSummary();  
-    	importSummary.setStatus(ImportStatus.ERROR);
-    	importSummary.setUid(UUID.randomUUID().toString());
-    	importSummary.setName(UUID.randomUUID().toString());
-		importSummary.setReportName(report.getName());
-		importSummary.setDescription("Error posting to DHISv2. No matching parameters on the server");
-		importSummary.setReportDate(DateUtils.stringToDate(DateUtils.getToday())); 
-		importSummary.setDataSetComplete("false");
-		
-		ImportCount importCount = new ImportCount();
-    	importCount.setIgnored(0);
-    	importCount.setImported(0);
-    	importCount.setUpdated(0);
-    	importCount.setUid(UUID.randomUUID().toString());
-    	importCount.setName(UUID.randomUUID().toString());
-    	importCount.setImportSummary(importSummary);        	
-    	importSummary.setDataValueCount(importCount);
-    	
-    	importSummary = service.saveImportSummary(importSummary);
-    	log.info("User:"+service.getUsername()+" executed report template :"+importSummary.getReportName()+" on "+Calendar.getInstance().getTime());
-		return Collections.singletonMap("importSummary", importSummary);
-                
+        }                
     }
     
     
@@ -359,6 +355,17 @@ public class ReportController
         log.info("User:"+service.getUsername()+" deleted location :"+ln.getName()+" on "+Calendar.getInstance().getTime());
         service.purgeLocation(ln);
         return Views.LIST_LOCATION;
+    }
+    
+    private void createImportCount(ImportSummary importSummary){
+    	ImportCount importCount = new ImportCount();
+    	importCount.setIgnored(0);
+    	importCount.setImported(0);
+    	importCount.setUpdated(0);
+    	importCount.setUid(UUID.randomUUID().toString());
+    	importCount.setName(importSummary.getReportName());
+    	importSummary.setDataValueCount(importCount);
+    	service.saveImportSummary(importSummary);
     }
 	
 }

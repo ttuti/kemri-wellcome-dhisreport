@@ -35,6 +35,9 @@ public class DataValue
 
     @XmlAttribute( required = true )
     protected String value;
+    
+    @XmlTransient
+    protected String error;
 
     public DataValue()
     {
@@ -130,5 +133,13 @@ public class DataValue
     {
         this.value = value;
     }
+
+	public String getError() {
+		return error;
+	}
+
+	public void setError(String error) {
+		this.error = error;
+	}
 
 }

@@ -71,6 +71,9 @@ public class DataValueSet
 
     @XmlAttribute( required = false )
     protected String orgUnitIdScheme;
+    
+    @XmlTransient
+    protected String error;
 
     /**
      * Gets the value of the dataValue property.
@@ -246,4 +249,12 @@ public class DataValueSet
         t.setParameter( "date", dateParam );
         t.transform( source, new StreamResult( outputStream ) );
     }
+
+	public String getError() {
+		return error;
+	}
+
+	public void setError(String error) {
+		this.error = error;
+	}
 }

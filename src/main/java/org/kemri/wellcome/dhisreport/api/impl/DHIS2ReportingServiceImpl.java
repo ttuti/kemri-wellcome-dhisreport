@@ -185,6 +185,8 @@ public class DHIS2ReportingServiceImpl implements DHIS2ReportingService {
 		Collection<DataValueTemplate> templates = reportDefinition
 				.getDataValueTemplates();
 		DataValueSet dataValueSet = new DataValueSet();
+		DataValueSet errorValueSet = new DataValueSet();
+		
 		dataValueSet.setDataElementIdScheme("code");
 		dataValueSet.setOrgUnitIdScheme("code");
 		dataValueSet.setPeriod(period.getAsIsoString());
@@ -193,6 +195,7 @@ public class DHIS2ReportingServiceImpl implements DHIS2ReportingService {
 		dataValueSet.setDataSet(reportDefinition.getCode());
 
 		Collection<DataValue> dataValues = dataValueSet.getDataValues();
+		Collection<DataValue> errorValues = errorValueSet.getDataValues();
 		int addedValuesCount = 0;
 		for (DataValueTemplate dvt : templates) {
 			DataValue dataValue = new DataValue();
@@ -200,12 +203,17 @@ public class DHIS2ReportingServiceImpl implements DHIS2ReportingService {
 			dataValue.setCategoryOptionCombo(dvt.getDisaggregation().getCode());
 
 			try {
-				String value = dao.evaluateDataValueTemplate(dvt, period,
-						location);
-				if (value != null && !value.isEmpty()) {
+				String value = dao.evaluateDataValueTemplate(dvt, period,location);
+				if (value != null && !value.isEmpty() && !value.equalsIgnoreCase("No results returned for query")) {
 					dataValue.setValue(value);
 					dataValues.add(dataValue);
 					addedValuesCount += 1;
+				}else{
+					DataValue errorValue = new DataValue();
+					errorValue.setError(dvt.getDataelement().getName()+":"+value);
+					errorValues.add(errorValue);
+					errorValueSet.setError("ERROR");
+					return errorValueSet;
 				}
 			} catch (DHIS2ReportingException ex) {
 				log.error(ex.getMessage());
@@ -246,18 +254,10 @@ public class DHIS2ReportingServiceImpl implements DHIS2ReportingService {
 			saveDisaggregation(disagg);
 		}
 		for (ReportDefinition rd : reportTemplates.getReportDefinitions()) {
-			ReportDefinition reportDefination = saveReportDefinition(rd);
-			for (DataValueTemplate dvt : rd.getDataValueTemplates()) {
-				String query = null;
-				DataValueTemplate tempDVT = dao.getDataValueTemplate(reportDefination, dvt.getDataelement(), dvt.getDisaggregation());
-				if(tempDVT !=null){
-					query = tempDVT.getQuery();
-					dvt.setQuery(query);
-				}					
-				log.debug("Query:"+query+"\n");
-				dvt.setReportDefinition(reportDefination);				
-				saveDataValueTemplate(dvt);
-			}
+			for ( DataValueTemplate dvt : rd.getDataValueTemplates() ){
+                dvt.setReportDefinition( rd );
+            }
+			saveReportDefinition(rd);			
 		}
 	}
 
@@ -328,7 +328,7 @@ public class DHIS2ReportingServiceImpl implements DHIS2ReportingService {
 	public Collection<Location> getAllLocations() {
 		return dao.getAllLocations();
 	}
-
+	
 	@Override
 	@Scheduled(cron = "0 0 18 ? * 1")
 	public void autoPostToDhis() {

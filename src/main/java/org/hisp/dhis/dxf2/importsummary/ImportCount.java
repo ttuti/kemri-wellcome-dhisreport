@@ -30,18 +30,14 @@ package org.hisp.dhis.dxf2.importsummary;
 import java.io.Serializable;
 import java.util.UUID;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.*;
 
-import org.codehaus.jackson.annotate.JsonBackReference;
 import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 import org.kemri.wellcome.dhisreport.api.model.Identifiable;
 
@@ -76,12 +72,6 @@ public class ImportCount implements Serializable, Identifiable
     @XmlAttribute( required = true )
     @Column(name="ignored", nullable=false)
     private int ignored;
-    
-    @XmlTransient
-    @OneToOne(cascade= CascadeType.PERSIST)
-    @JoinColumn(name="import_summary_id",nullable=false)
-    @JsonBackReference
-    private ImportSummary importSummary;
     
     @XmlTransient
     @Column(name="name",nullable=false, unique = true)
@@ -189,14 +179,6 @@ public class ImportCount implements Serializable, Identifiable
 			uid=UUID.randomUUID().toString();
 		this.uid = uid;
 		this.name=uid;
-	}
-
-	public ImportSummary getImportSummary() {
-		return importSummary;
-	}
-
-	public void setImportSummary(ImportSummary importSummary) {
-		this.importSummary = importSummary;
 	}
 
 	@Override

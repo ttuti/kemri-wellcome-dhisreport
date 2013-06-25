@@ -41,6 +41,7 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
@@ -90,13 +91,14 @@ public class ImportSummary implements Serializable, Identifiable
     
     @XmlElement( required = true )
     @JsonManagedReference
-    @OneToOne(mappedBy="importSummary", fetch = FetchType.LAZY, cascade= CascadeType.PERSIST)
+    @OneToOne(cascade = CascadeType.ALL, optional = false, fetch = FetchType.EAGER, orphanRemoval = true)
+    @JoinColumn(name="import_count_id",nullable=false)
     private ImportCount dataValueCount;
     
     @XmlElementWrapper( name = "conflicts", required = false )
     @XmlElement( name = "conflict" )
     @JsonManagedReference
-    @OneToMany(mappedBy="importSummary", fetch = FetchType.LAZY, cascade= CascadeType.PERSIST)
+    @OneToMany(mappedBy="importSummary", fetch = FetchType.LAZY)
     private List<ImportConflict> conflicts;
 
     @XmlElement( required = true )
@@ -141,16 +143,6 @@ public class ImportSummary implements Serializable, Identifiable
     public void setDescription( String description )
     {
         this.description = description;
-    }
-
-    public ImportCount getDataValueCount()
-    {
-        return dataValueCount;
-    }
-
-    public void setDataValueCount( ImportCount dataValueCount )
-    {
-        this.dataValueCount = dataValueCount;
     }
 
     public List<ImportConflict> getConflicts()
@@ -224,5 +216,13 @@ public class ImportSummary implements Serializable, Identifiable
 	public void setName(String name) {
 		this.name = name;
 		
+	}
+
+	public ImportCount getDataValueCount() {
+		return dataValueCount;
+	}
+
+	public void setDataValueCount(ImportCount dataValueCount) {
+		this.dataValueCount = dataValueCount;
 	}
 }

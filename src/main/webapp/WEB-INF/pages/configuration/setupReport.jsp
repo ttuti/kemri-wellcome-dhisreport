@@ -3,7 +3,8 @@
 	<fieldset>
 		<h3>${reportExecute.reportDefinitionName}</h3>
 		<form:form method="post" modelAttribute="reportExecute">
-			<form:hidden path="reportDefinationId" />	
+			<form:hidden path="reportDefinationId" />
+			<form:hidden path="reportDefinitionName" />	
 			<div id="errors" class="errors"></div>
 			<div class="paragraph">
 				<label for="frequency">Report Frequency:</label>
@@ -30,6 +31,7 @@
 			</div>
 			<div id="formButton">
 				<input type="submit" value="Post To DHIS" class="button">
+				<button onClick="KWTRDI.ajaxLoad('/report/listreports')" id="back" class="button">Back</button>
 			</div>
 		</form:form>
 	</fieldset>
@@ -38,6 +40,7 @@
     $j().ready(
             function() 
             {
+                $j('#back').hide();
             	$j('#date').datepicker({
             		maxDate: '+0d',
             		dateFormat: 'yy-mm-dd',
@@ -65,10 +68,15 @@
         var importSummary = data.importSummary;
         var status = importSummary.status;
         var desc = importSummary.description;
-        var snippet = "<dl><dt>Status</dt><dd>"+status+"</dd><dt>Description</dt><dd>"+desc+"</dd></dl>";
+        var snippet = null;
+        if(status=="ERROR")
+        	snippet = "<div style='color:#ED0C1B'><span style='font-weight:bold;'>Status</span>: "+status+"</div><div style='color:#ED0C1B'><span style='font-weight:bold;'>Description</span>: "+desc+"</div>";
+        else
+        	snippet = "<div style='color:#3E78FD;'><span style='font-weight:bold;'>Status</span>: "+status+"</div><div style='color:#3E78FD;'><span style='font-weight:bold;'>Description</span>: "+desc+"</div>";	
         $j('#errors').html(snippet);
-        setTimeout(function(){
-        	KWTRDI.ajaxLoad('/report/listreports');
-		},5000);
+        $j('select[name=frequency]').attr("disabled", true);
+        $j('select[name=location]').attr("disabled", true);
+        $j('input[name=date]').attr("disabled", true);
+        $j('#back').show();
     }    
 </script>

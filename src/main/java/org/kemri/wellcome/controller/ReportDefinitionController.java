@@ -87,7 +87,7 @@ public class ReportDefinitionController
     {
         response.setContentType( "application/xml" );
         response.setCharacterEncoding( "UTF-8" );
-        response.addHeader( "Content-Disposition", "attachment; filename=reportDefinition.xml" );
+        response.addHeader( "Content-Disposition", "attachment; filename=ReportDefinition.xml" );
         ReportTemplates templates = service.getReportTemplates();
         if(templates !=null)
         	service.marshallReportTemplates( response.getOutputStream(), templates );
